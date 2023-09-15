@@ -1,19 +1,17 @@
 import { AppConfigService } from '@/modules/config/config.service'
 import { Injectable } from '@nestjs/common'
-import { FastifyRequest, FastifyReply } from 'fastify'
-
 import { Role } from '@prisma/client'
 
-type RegenerateSessionInput = {
-  request: FastifyRequest
-  reply: FastifyReply
-  userId?: string
-  userRole?: Role
-}
+import { RegenerateSessionInput, CreateCookieInput } from './accessory.types'
 
 @Injectable()
 export class AccessoryService {
   constructor(private config: AppConfigService) {}
+
+  async createCookie(input: CreateCookieInput) {
+    input.reply.cookies[input.name] = input.value
+    input.reply.setCookie(input.name, input.value, input.options)
+  }
 
   async regenerateSession(input: RegenerateSessionInput) {
     const maxAge = this.config.getSessionMaxAge()
@@ -23,6 +21,13 @@ export class AccessoryService {
       expires: sessionExpires,
     }
     await input.request.session.regenerate()
+
+    this.createCookie({
+      reply: input.reply,
+      name: 'sessionId',
+      value: input.request.session.id || '',
+      options,
+    })
 
     const sessionToken = input.request.session.id || ''
     input.request.session.userId = input.userId
