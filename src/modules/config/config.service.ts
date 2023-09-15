@@ -8,4 +8,8 @@ export class AppConfigService {
   getSessionSecret(): string {
     return this.configService.get('SESSION_SECRET')
   }
+
+  getSessionMaxAge(): string {
+    return this.configService.get('SESSION_MAX_AGE')
+  }
 }
