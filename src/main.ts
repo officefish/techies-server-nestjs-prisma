@@ -1,5 +1,9 @@
 import { NestFactory } from '@nestjs/core'
-import { initializeSwagger } from './bootstrap'
+import {
+  initializeSwagger,
+  initializeCookies,
+  initializeSession,
+} from './bootstrap'
 import { AppModule } from './modules/app/app.module'
 import {
   FastifyAdapter,
@@ -11,11 +15,12 @@ async function bootstrap() {
     AppModule,
     new FastifyAdapter(),
   )
-
+  // should be initialized before session
+  initializeCookies(app)
   initializeSwagger(app)
-
+  initializeSession(app)
   //app.getHttpAdapter().
 
-  await app.listen(3000)
+  await app.listen(8001)
 }
 bootstrap()
