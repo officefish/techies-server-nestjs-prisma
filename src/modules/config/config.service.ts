@@ -5,11 +5,23 @@ import { ConfigService as NestConfigService } from '@nestjs/config'
 export class AppConfigService {
   constructor(private configService: NestConfigService) {}
 
+  getJwtSignature(): string {
+    return this.configService.get('JWT_SIGNATURE')
+  }
+
   getSessionSecret(): string {
     return this.configService.get('SESSION_SECRET')
   }
 
-  getSessionMaxAge(): string {
+  getSessionMaxAge(): number {
     return this.configService.get('SESSION_MAX_AGE')
+  }
+
+  getAccessTokenMinutes(): number {
+    return this.configService.get('ACCESS_TOKEN_MINUTES')
+  }
+
+  getRefreshTokenDays(): number {
+    return this.configService.get('REFRESH_TOKEN_DAYS')
   }
 }

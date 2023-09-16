@@ -1,6 +1,9 @@
 import { createZodDto } from 'nestjs-zod'
 import { z } from 'nestjs-zod/z'
 
+import { Role } from '@prisma/client'
+const roleEnum = z.nativeEnum(Role)
+
 const SignInSchema = z.object({
   email: z.string().email(),
   password: z
@@ -13,9 +16,18 @@ const SignInSchema = z.object({
     .atLeastOne('special'), // Expect password to have at least one special symbol
 })
 
+const SignInSuccessPayload = z.object({
+  id: z.string(),
+  email: z.string().email(),
+  name: z.string(),
+  verified: z.boolean(),
+  authenticated: z.boolean(),
+  role: roleEnum,
+})
+
 const SignInSuccessSchema = z.object({
   statusCode: z.number(),
-  userId: z.string(),
+  payload: SignInSuccessPayload,
 })
 
 const FailSchema = z.object({

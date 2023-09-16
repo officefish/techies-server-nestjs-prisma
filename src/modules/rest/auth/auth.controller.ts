@@ -75,8 +75,27 @@ export class AuthController {
       userRole,
     })
 
-    console.log('sessionToken: ', sessionToken)
+    await this.accessory.createTokenCookies({
+      userId,
+      sessionToken,
+      request,
+      reply,
+    })
 
-    return { statusCode: 201, userId: user.id }
+    if (!user.verified) {
+      //await sendVerifyEmail(request, reply, email)
+    }
+
+    //console.log('sessionToken: ', sessionToken)
+    const payload = {
+      id: user?.id,
+      email: user?.email,
+      name: user?.name,
+      verified: user?.verified,
+      authenticated: true,
+      role: user?.role,
+    }
+
+    return { statusCode: 201, payload }
   }
 }
