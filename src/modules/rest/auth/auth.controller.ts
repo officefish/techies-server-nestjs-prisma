@@ -3,7 +3,8 @@ import { Res } from '@nestjs/common'
 import { AuthService } from './auth.service'
 //import { User as UserModel } from '@prisma/client'
 import { FastifyRequest, FastifyReply } from 'fastify'
-import { SignInDto, SignInSuccessDto, FailDto } from './auth.schema'
+import { SignInDto, SignUpDto, SignInSuccessDto, FailDto } from './auth.schema'
+
 import {
   ApiCreatedResponse,
   ApiResponse,
@@ -18,6 +19,9 @@ import {
 
 import { User as UserModel } from '@prisma/client'
 import { AccessoryService } from '@/modules/accessory/accessory.service'
+import { CryptoService } from '@/modules/crypto/crypto.service'
+import { UserService } from '@/modules/rest/user/user.service'
+import { AppConfigService } from '@/modules/config/config.service'
 
 @ApiTags('auth')
 @Controller('auth')
@@ -25,6 +29,9 @@ export class AuthController {
   constructor(
     private readonly service: AuthService,
     private readonly accessory: AccessoryService,
+    private readonly crypto: CryptoService,
+    private readonly user: UserService,
+    private readonly env: AppConfigService,
   ) {}
 
   @Post('sign-in')
@@ -49,12 +56,12 @@ export class AuthController {
     @Body() credentials: SignInDto,
     @Req() request: FastifyRequest,
     @Res() reply: FastifyReply,
-  ) {
+  ): Promise<SignInSuccessDto> {
     const { email, password } = credentials
     const user: UserModel = await this.service.signIn(email, password)
 
     if (!user) {
-      return reply.code(401).send({ statusCode: 403, message: 'UNAUTHORIZED' })
+      return reply.code(401).send({ statusCode: 401, message: 'UNAUTHORIZED' })
     }
 
     // If the user has enabled two-factor authentication (2FA) ...
@@ -68,19 +75,23 @@ export class AuthController {
     //await updateSession(request, reply, user)
     const userId = user.id
     const userRole = user.role
-    const { sessionToken } = await this.accessory.regenerateSession({
+
+    const { sessionId, options } = await this.accessory.regenerateSession({
       request,
       reply,
       userId,
       userRole,
     })
 
-    await this.accessory.createTokenCookies({
-      userId,
-      sessionToken,
-      request,
-      reply,
-    })
+    /* Vitest request does not create session */
+    if (sessionId.length) {
+      await this.accessory.createTokenCookies({
+        userId,
+        sessionId,
+        reply,
+        options,
+      })
+    }
 
     if (!user.verified) {
       //await sendVerifyEmail(request, reply, email)
@@ -96,6 +107,51 @@ export class AuthController {
       role: user?.role,
     }
 
-    return { statusCode: 201, payload }
+    return reply.code(201).send({ statusCode: 201, payload })
+  }
+
+  @Post('sign-up')
+  async register(
+    @Body() credentials: SignUpDto,
+    @Req() request: FastifyRequest,
+    @Res() reply: FastifyReply,
+  ) {
+    const { email, password, name } = credentials
+
+    const saltLength = this.env.getSaltLength()
+
+    try {
+      const salt = await this.crypto.generateSalt(saltLength)
+      const hashedPassword = await this.crypto.hash(password, salt)
+
+      // Insert a record into the "user" collection.
+      const data = {
+        name,
+        email,
+        password: hashedPassword,
+        salt,
+        verified: false,
+      }
+      const user = await this.user.createUser(data)
+
+      if (user) {
+        try {
+          // After successfully creating a new user, automatically log in.
+          return await this.signIn(credentials, request, reply)
+          //reply.code(201).send(signInPayload)
+        } catch (e) {
+          console.log(e)
+          reply.code(403).send({ statusCode: 403, message: 'FORBIDDEN' })
+        }
+      } else {
+        reply.code(502).send({ statusCode: 502, message: 'DATABASE ERROR' })
+      }
+
+      //console.log(user)
+    } catch (e) {
+      //reply.code(reply.codeStatus.CONFLICT).send(e)
+      //console.log(e)
+      reply.code(409).send({ statusCode: 409, message: 'CONFLICT' })
+    }
   }
 }

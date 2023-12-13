@@ -17,8 +17,8 @@ export type CreateCookieInput = {
 }
 
 export type CreateTokensInput = {
-  request: FastifyRequest
   reply: FastifyReply
   userId: string
-  sessionToken: string
+  sessionId: string
+  options: CookieOptions
 }

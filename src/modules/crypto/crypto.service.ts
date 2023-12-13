@@ -15,7 +15,7 @@ export class CryptoService {
     return await bcrypt.compare(requestPassword, databasePassword)
   }
 
-  genSalt(length: number) {
+  generateSalt(length: number) {
     return bcrypt.genSalt(length)
   }
 

@@ -16,13 +16,14 @@ export class AccessoryService {
   ) {}
 
   /* Expires */
-  nowPlusMinutes(delay: number): Date {
+
+  async nowPlusMinutes(delay: number) {
     const expires = new Date()
     expires.setMinutes(expires.getMinutes() + delay)
     return expires
   }
 
-  nowPlusDays(delay: number): Date {
+  async nowPlusDays(delay: number) {
     const expires = new Date()
     expires.setDate(expires.getDate() + delay)
     return expires
@@ -36,14 +37,14 @@ export class AccessoryService {
   }
 
   async createTokenCookies(input: CreateTokensInput) {
-    const { userId, sessionToken, reply } = input
+    const { userId, sessionId, reply, options } = input
     const accessTokenMinutes = this.env.getAccessTokenMinutes()
     const refreshTokenDays = this.env.getRefreshTokenDays()
-    const cookieOptions = input.request.server.cookieOptions
 
-    const accessToken = await this.crypto.signAsync({ userId, sessionToken })
-    const accessExpires = this.nowPlusMinutes(accessTokenMinutes)
-    const accessOptions = { ...cookieOptions, expires: accessExpires }
+    const accessToken = await this.crypto.signAsync({ userId, sessionId })
+
+    const accessExpires = await this.nowPlusMinutes(accessTokenMinutes)
+    const accessOptions = { ...options, expires: accessExpires }
 
     this.createCookie({
       reply,
@@ -52,9 +53,9 @@ export class AccessoryService {
       options: accessOptions,
     })
 
-    const refreshToken = await this.crypto.signAsync({ sessionToken })
-    const refreshExpires = this.nowPlusDays(refreshTokenDays)
-    const refreshOptions = { ...cookieOptions, expires: refreshExpires }
+    const refreshToken = await this.crypto.signAsync({ sessionId })
+    const refreshExpires = await this.nowPlusDays(refreshTokenDays)
+    const refreshOptions = { ...options, expires: refreshExpires }
     this.createCookie({
       reply,
       name: 'refresh-token',
@@ -72,19 +73,23 @@ export class AccessoryService {
       ...input.request.server.cookieOptions,
       expires: sessionExpires,
     }
-    await input.request.session.regenerate()
 
-    this.createCookie({
-      reply: input.reply,
-      name: 'sessionId',
-      value: input.request.session.id || '',
-      options,
-    })
+    let sessionId = ''
+    // vitest request has no session, so we should ignore creating cookies in this way
+    if (input.request.session) {
+      await input.request.session.regenerate()
+      sessionId = input.request.session.sessionId || ''
+      input.request.session.userId = input.userId
+      input.request.session.userRole = input.userRole || Role.GUEST
 
-    const sessionToken = input.request.session.id || ''
-    input.request.session.userId = input.userId
-    input.request.session.userRole = input.userRole || Role.GUEST
+      this.createCookie({
+        reply: input.reply,
+        name: 'sessionId',
+        value: sessionId,
+        options,
+      })
+    }
 
-    return { sessionToken, options }
+    return { sessionId: sessionId, options }
   }
 }

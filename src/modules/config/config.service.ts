@@ -24,4 +24,8 @@ export class AppConfigService {
   getRefreshTokenDays(): number {
     return this.configService.get('REFRESH_TOKEN_DAYS')
   }
+
+  getSaltLength(): number {
+    return this.configService.get('JWT_SALT_LENGTH')
+  }
 }

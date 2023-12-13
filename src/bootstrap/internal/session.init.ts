@@ -1,5 +1,6 @@
 import { INestApplication, Logger } from '@nestjs/common'
 import { fastifySession } from '@fastify/session'
+//import secureSession from '@fastify/secure-session'
 import { Role } from '@prisma/client'
 
 declare module 'fastify' {
@@ -18,6 +19,7 @@ export function initializeSession(app: INestApplication) {
     secret,
     cookieName: 'sessionId',
     cookie: { secure: false },
+    salt: 'mq9hDxBVDbspDR6n',
   })
 
   server.addHook('onRequest', (request, reply, next) => {
