@@ -1,6 +1,6 @@
 import { Injectable } from '@nestjs/common'
 import { PrismaService } from '@/modules/prisma/prisma.service'
-import { User, Prisma, BasicInfo } from '@prisma/client'
+import { User, Prisma, BasicInfo, Quote, Domain } from '@prisma/client'
 
 interface FullNameInput {
   firstName?: string
@@ -28,6 +28,14 @@ interface BasicInfoInput {
   career?: CareerInput
   education?: EducationInput
   location?: LocationInput
+}
+
+interface QuoteInput {
+  content?: string
+}
+
+interface DomainInput {
+  value?: string
 }
 
 @Injectable()
@@ -83,10 +91,6 @@ export class UserService {
       where: { userId: user.id },
     })
 
-    // const basicInfo2 = await this.prisma.basicInfo.findUnique({
-    //   where: { user: { email: where.email } },
-    // })
-
     if (basicInfo) {
       await this.prisma.$transaction([
         this.prisma.fullName.delete({ where: { basicInfoId: basicInfo.id } }),
@@ -95,6 +99,22 @@ export class UserService {
         this.prisma.location.delete({ where: { basicInfoId: basicInfo.id } }),
         this.prisma.basicInfo.delete({ where: { id: basicInfo.id } }),
       ])
+    }
+
+    const quote = await this.prisma.quote.findUnique({
+      where: { userId: user.id },
+    })
+
+    if (quote) {
+      await this.prisma.quote.delete({ where: { id: quote.id } })
+    }
+
+    const domain = await this.prisma.domain.findUnique({
+      where: { userId: user.id },
+    })
+
+    if (domain) {
+      await this.prisma.domain.delete({ where: { id: domain.id } })
     }
 
     return this.prisma.user.delete({
@@ -116,33 +136,43 @@ export class UserService {
   }
 
   getBaseInfoCreateInputs = (data: BasicInfoInput) => {
+    const firstName = data.fullName?.firstName || ''
+    const lastName = data.fullName?.lastName || ''
+    const company = data.career?.company || ''
+    const role = data.career?.role || ''
+    const university = data.education?.university || ''
+    const faculty = data.education?.faculty || ''
+    const country = data.location?.country || ''
+    const region = data.location?.region || ''
+    const timeZone = data.location?.timeZone || ''
+
     const fullNameCreateInput: Prisma.FullNameCreateNestedOneWithoutBasicInfoInput =
       {
         create: {
-          firstName: data.fullName.firstName,
-          lastName: data.fullName.lastName,
+          firstName,
+          lastName,
         },
       }
     const careerCreateInput: Prisma.CareerCreateNestedOneWithoutBasicInfoInput =
       {
         create: {
-          company: data.career.company,
-          role: data.career.role,
+          company,
+          role,
         },
       }
     const educationCreateInput: Prisma.EducationCreateNestedOneWithoutBasicInfoInput =
       {
         create: {
-          university: data.education.university,
-          faculty: data.education.faculty,
+          university,
+          faculty,
         },
       }
     const locationCreateInput: Prisma.LocationCreateNestedOneWithoutBasicInfoInput =
       {
         create: {
-          country: data.location.country,
-          region: data.location.region,
-          timeZone: data.location.timeZone,
+          country,
+          region,
+          timeZone,
         },
       }
     return {
@@ -154,35 +184,56 @@ export class UserService {
   }
 
   getBaseInfoUpdateInputs = (data: BasicInfoInput) => {
+    const firstName = data.fullName?.firstName || ''
+    const lastName = data.fullName?.lastName || ''
+    const company = data.career?.company || ''
+    const role = data.career?.role || ''
+    const university = data.education?.university || ''
+    const faculty = data.education?.faculty || ''
+    const country = data.location?.country || ''
+    const region = data.location?.region || ''
+    const timeZone = data.location?.timeZone || ''
+
     const fullNameUpdateInput: Prisma.FullNameUpdateOneWithoutBasicInfoNestedInput =
-      {
-        update: {
-          firstName: data.fullName.firstName,
-          lastName: data.fullName.lastName,
-        },
-      }
+      data.fullName
+        ? {
+            update: {
+              firstName,
+              lastName,
+            },
+          }
+        : {}
     const careerUpdateInput: Prisma.CareerUpdateOneWithoutBasicInfoNestedInput =
-      {
-        update: {
-          company: data.career.company,
-          role: data.career.role,
-        },
-      }
+      data.career
+        ? {
+            update: {
+              company,
+              role,
+            },
+          }
+        : {}
+
     const educationUpdateInput: Prisma.EducationUpdateOneWithoutBasicInfoNestedInput =
-      {
-        update: {
-          university: data.education.university,
-          faculty: data.education.faculty,
-        },
-      }
+      data.education
+        ? {
+            update: {
+              university,
+              faculty,
+            },
+          }
+        : {}
+
     const locationUpdateInput: Prisma.LocationUpdateOneWithoutBasicInfoNestedInput =
-      {
-        update: {
-          country: data.location.country,
-          region: data.location.region,
-          timeZone: data.location.timeZone,
-        },
-      }
+      data.location
+        ? {
+            update: {
+              country,
+              region,
+              timeZone,
+            },
+          }
+        : {}
+
     return {
       fullNameUpdateInput,
       careerUpdateInput,
@@ -233,6 +284,56 @@ export class UserService {
       where: { userId: user.id },
       create: basicInfoCreateInput,
       update: basicInfoUpdateInput,
+    })
+  }
+
+  async upsetQuote(params: {
+    user: Prisma.UserWhereUniqueInput
+    data: QuoteInput
+  }): Promise<Quote> {
+    const { user, data } = params
+
+    const content = data.content || ''
+
+    const quoteCreateInput: Prisma.QuoteCreateInput = {
+      user: { connect: { id: user.id } },
+      content,
+    }
+
+    const quoteUpdateInput: Prisma.QuoteUpdateInput = {
+      user: { connect: { id: user.id } },
+      content,
+    }
+
+    return this.prisma.quote.upsert({
+      where: { userId: user.id },
+      create: quoteCreateInput,
+      update: quoteUpdateInput,
+    })
+  }
+
+  async upsetDomain(params: {
+    user: Prisma.UserWhereUniqueInput
+    data: DomainInput
+  }): Promise<Domain> {
+    const { user, data } = params
+
+    const value = data.value || ''
+
+    const domainCreateInput: Prisma.DomainCreateInput = {
+      user: { connect: { id: user.id } },
+      value,
+    }
+
+    const domainUpdateInput: Prisma.DomainUpdateInput = {
+      user: { connect: { id: user.id } },
+      value,
+    }
+
+    return this.prisma.domain.upsert({
+      where: { userId: user.id },
+      create: domainCreateInput,
+      update: domainUpdateInput,
     })
   }
 }

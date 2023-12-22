@@ -89,6 +89,18 @@ const generateNewUser = () => {
   }
 }
 
+const generateRandomQuote = () => {
+  return {
+    content: faker.string.alphanumeric({ length: { min: 10, max: 210 } }),
+  }
+}
+
+const generateRandomDomain = () => {
+  return {
+    value: faker.string.alphanumeric({ length: { min: 4, max: 22 } }),
+  }
+}
+
 interface BasicInfoGeneratorParams {
   includeFullname: boolean
   includeCareer: boolean
@@ -296,6 +308,209 @@ describe('UserService', () => {
     })
     expect(locationData).instanceOf(Object)
     expect(locationData.basicInfoId == prismaBasicInfo.id).toBe(true)
+
+    await destroyUser(userService, prisma, userData.email)
+  })
+
+  test('Create and then update basicInfo', async () => {
+    const userData = generateNewUser()
+
+    /* Sure user not exist in db */
+    await checkUserNotExist(prisma, userData.email)
+
+    const userDataForDb = await makeUserInputData({ env, crypto, userData })
+    const user = await userService.createUser(userDataForDb)
+
+    expect(user).instanceOf(Object)
+
+    const basicInfo1 = generateBasicInfo({
+      includeFullname: true,
+      includeCareer: true,
+      includeEducation: false,
+      includeLocation: false,
+    })
+
+    let prismaBasicInfo = await userService.upsetBasicInfo({
+      user: { id: user.id },
+      data: basicInfo1,
+    })
+    expect(prismaBasicInfo).instanceOf(Object)
+
+    /* second time generation then update */
+    const basicInfo2 = generateBasicInfo({
+      includeFullname: false,
+      includeCareer: false,
+      includeEducation: true,
+      includeLocation: true,
+    })
+
+    prismaBasicInfo = await userService.upsetBasicInfo({
+      user: { id: user.id },
+      data: basicInfo2,
+    })
+
+    const fullNameData = await prisma.fullName.findUnique({
+      where: { basicInfoId: prismaBasicInfo.id },
+    })
+    expect(fullNameData).instanceOf(Object)
+    expect(fullNameData.basicInfoId == prismaBasicInfo.id).toBe(true)
+    expect(fullNameData.firstName == basicInfo1.fullName.firstName).toBe(true)
+    expect(fullNameData.lastName == basicInfo1.fullName.lastName).toBe(true)
+
+    const careerData = await prisma.career.findUnique({
+      where: { basicInfoId: prismaBasicInfo.id },
+    })
+    expect(careerData).instanceOf(Object)
+    expect(careerData.basicInfoId == prismaBasicInfo.id).toBe(true)
+    expect(careerData.company == basicInfo1.career.company).toBe(true)
+    expect(careerData.role == basicInfo1.career.role).toBe(true)
+
+    const educationData = await prisma.education.findUnique({
+      where: { basicInfoId: prismaBasicInfo.id },
+    })
+    expect(educationData).instanceOf(Object)
+    expect(educationData.basicInfoId == prismaBasicInfo.id).toBe(true)
+    expect(educationData.university == basicInfo2.education.university).toBe(
+      true,
+    )
+    expect(educationData.faculty == basicInfo2.education.faculty).toBe(true)
+
+    const locationData = await prisma.location.findUnique({
+      where: { basicInfoId: prismaBasicInfo.id },
+    })
+    expect(locationData).instanceOf(Object)
+    expect(locationData.basicInfoId == prismaBasicInfo.id).toBe(true)
+    expect(locationData.country == basicInfo2.location.country).toBe(true)
+    expect(locationData.region == basicInfo2.location.region).toBe(true)
+    expect(locationData.timeZone == basicInfo2.location.timeZone).toBe(true)
+
+    await destroyUser(userService, prisma, userData.email)
+  })
+
+  test('Create quote', async () => {
+    const userData = generateNewUser()
+
+    /* Sure user not exist in db */
+    await checkUserNotExist(prisma, userData.email)
+
+    const userDataForDb = await makeUserInputData({ env, crypto, userData })
+    const user = await userService.createUser(userDataForDb)
+
+    expect(user).instanceOf(Object)
+
+    const quote = generateRandomQuote()
+
+    const prismaQuote = await userService.upsetQuote({
+      user: { id: user.id },
+      data: quote,
+    })
+
+    const quoteData = await prisma.quote.findUnique({
+      where: { userId: user.id },
+    })
+    expect(prismaQuote).instanceOf(Object)
+    expect(quoteData).instanceOf(Object)
+    expect(quote.content == quoteData.content).toBe(true)
+
+    await destroyUser(userService, prisma, userData.email)
+  })
+
+  test('Update quote', async () => {
+    const userData = generateNewUser()
+
+    /* Sure user not exist in db */
+    await checkUserNotExist(prisma, userData.email)
+
+    const userDataForDb = await makeUserInputData({ env, crypto, userData })
+    const user = await userService.createUser(userDataForDb)
+
+    expect(user).instanceOf(Object)
+
+    let quote = generateRandomQuote()
+    const oldConent = quote.content
+
+    let prismaQuote = await userService.upsetQuote({
+      user: { id: user.id },
+      data: quote,
+    })
+
+    quote = generateRandomQuote()
+    prismaQuote = await userService.upsetQuote({
+      user: { id: user.id },
+      data: quote,
+    })
+
+    const quoteData = await prisma.quote.findUnique({
+      where: { userId: user.id },
+    })
+    expect(prismaQuote).instanceOf(Object)
+    expect(quoteData).instanceOf(Object)
+    expect(prismaQuote.content == quoteData.content).toBe(true)
+    expect(quoteData.content == oldConent).toBe(false)
+
+    await destroyUser(userService, prisma, userData.email)
+  })
+
+  test('Create domain', async () => {
+    const userData = generateNewUser()
+
+    /* Sure user not exist in db */
+    await checkUserNotExist(prisma, userData.email)
+
+    const userDataForDb = await makeUserInputData({ env, crypto, userData })
+    const user = await userService.createUser(userDataForDb)
+
+    expect(user).instanceOf(Object)
+
+    const domain = generateRandomDomain()
+
+    const prismaDomain = await userService.upsetDomain({
+      user: { id: user.id },
+      data: domain,
+    })
+
+    const domainData = await prisma.domain.findUnique({
+      where: { userId: user.id },
+    })
+    expect(prismaDomain).instanceOf(Object)
+    expect(domainData).instanceOf(Object)
+    expect(domain.value == domainData.value).toBe(true)
+
+    await destroyUser(userService, prisma, userData.email)
+  })
+
+  test('Update domain', async () => {
+    const userData = generateNewUser()
+
+    /* Sure user not exist in db */
+    await checkUserNotExist(prisma, userData.email)
+
+    const userDataForDb = await makeUserInputData({ env, crypto, userData })
+    const user = await userService.createUser(userDataForDb)
+
+    expect(user).instanceOf(Object)
+
+    let domain = generateRandomDomain()
+    const oldValue = domain.value
+
+    let prismaDomain = await userService.upsetDomain({
+      user: { id: user.id },
+      data: domain,
+    })
+
+    domain = generateRandomDomain()
+    prismaDomain = await userService.upsetDomain({
+      user: { id: user.id },
+      data: domain,
+    })
+
+    const domainData = await prisma.domain.findUnique({
+      where: { userId: user.id },
+    })
+    expect(prismaDomain).instanceOf(Object)
+    expect(domainData).instanceOf(Object)
+    expect(prismaDomain.value == domainData.value).toBe(true)
+    expect(domainData.value == oldValue).toBe(false)
 
     await destroyUser(userService, prisma, userData.email)
   })
