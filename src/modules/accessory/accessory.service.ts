@@ -36,6 +36,19 @@ export class AccessoryService {
     input.reply.setCookie(input.name, input.value, input.options)
   }
 
+  async signAsync(userId: string, userName: string) {
+    const payload = { sub: userId, userName }
+    const options = { secret: this.env.getJwtSignature() }
+    return await this.crypto.signAsync(payload, options)
+  }
+
+  async verifyAsync(token: string): Promise<string | undefined> {
+    const options = { secret: this.env.getJwtSignature() }
+    const payload = await this.crypto.verifyAsync(token, options)
+    const id = payload.sub || undefined
+    return id
+  }
+
   async createTokenCookies(input: CreateTokensInput) {
     const { userId, sessionId, reply, options } = input
     const accessTokenMinutes = this.env.getAccessTokenMinutes()
@@ -78,7 +91,7 @@ export class AccessoryService {
     // vitest request has no session, so we should ignore creating cookies in this way
     if (input.request.session) {
       await input.request.session.regenerate()
-      sessionId = input.request.session.sessionId || ''
+      sessionId = input.request.session.sessionId || undefined
       input.request.session.userId = input.userId
       input.request.session.userRole = input.userRole || Role.GUEST
 
@@ -90,6 +103,6 @@ export class AccessoryService {
       })
     }
 
-    return { sessionId: sessionId, options }
+    return { sessionId, options }
   }
 }

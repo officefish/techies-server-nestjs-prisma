@@ -45,6 +45,7 @@ const SignInSuccessPayload = z.object({
   verified: z.boolean(),
   authenticated: z.boolean(),
   role: roleEnum,
+  accessToken: z.string().optional(),
 })
 
 const SignInSuccessSchema = z.object({

@@ -2,7 +2,13 @@ import { Injectable } from '@nestjs/common'
 //import bcrypt from 'bcryptjs'
 import * as bcrypt from 'bcryptjs'
 import { JwtService } from '@nestjs/jwt/dist'
-import { JwtSignOptions } from '@nestjs/jwt/dist'
+import { JwtSignOptions, JwtVerifyOptions } from '@nestjs/jwt/dist'
+
+interface UserPayload {
+  sub: string
+  userName: string
+  iat: number
+}
 
 @Injectable()
 export class CryptoService {
@@ -26,5 +32,9 @@ export class CryptoService {
   /* Jwt */
   async signAsync(payload: object | Buffer, options?: JwtSignOptions) {
     return await this.jwt.signAsync(payload, options)
+  }
+
+  async verifyAsync(token: string, options?: JwtVerifyOptions) {
+    return (await this.jwt.verify(token, options)) as UserPayload
   }
 }

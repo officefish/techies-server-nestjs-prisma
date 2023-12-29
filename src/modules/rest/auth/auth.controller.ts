@@ -1,7 +1,6 @@
 import { Controller, Post, Body, Req } from '@nestjs/common'
 import { Res } from '@nestjs/common'
 import { AuthService } from './auth.service'
-//import { User as UserModel } from '@prisma/client'
 import { FastifyRequest, FastifyReply } from 'fastify'
 import { SignInDto, SignUpDto, SignInSuccessDto, FailDto } from './auth.schema'
 
@@ -22,6 +21,18 @@ import { AccessoryService } from '@/modules/accessory/accessory.service'
 import { CryptoService } from '@/modules/crypto/crypto.service'
 import { UserService } from '@/modules/rest/user/user.service'
 import { AppConfigService } from '@/modules/config/config.service'
+
+import { Role } from '@prisma/client'
+
+interface SignInSuccessPayload {
+  email: string
+  id: string
+  name: string
+  verified: boolean
+  authenticated: boolean
+  role: Role
+  accessToken?: string
+}
 
 @ApiTags('auth')
 @Controller('auth')
@@ -83,21 +94,23 @@ export class AuthController {
       userRole,
     })
 
-    /* Vitest request does not create session */
-    if (sessionId.length) {
+    /* Vitest request does not create session, so we should create jwt as parameter */
+    let jwtToken: string
+    if (sessionId) {
       await this.accessory.createTokenCookies({
         userId,
         sessionId,
         reply,
         options,
       })
+    } else {
+      jwtToken = await this.accessory.signAsync(userId, user.name)
     }
 
     if (!user.verified) {
       //await sendVerifyEmail(request, reply, email)
     }
 
-    //console.log('sessionToken: ', sessionToken)
     const payload = {
       id: user?.id,
       email: user?.email,
@@ -105,6 +118,9 @@ export class AuthController {
       verified: user?.verified,
       authenticated: true,
       role: user?.role,
+    } as SignInSuccessPayload
+    if (jwtToken) {
+      payload.accessToken = jwtToken
     }
 
     return reply.code(201).send({ statusCode: 201, payload })

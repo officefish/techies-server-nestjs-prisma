@@ -1,6 +1,5 @@
 import { Test, TestingModule } from '@nestjs/testing'
 import { INestApplication } from '@nestjs/common'
-import { faker } from '@faker-js/faker'
 import { AppModule } from '@/modules/app/app.module'
 import { ConfigModule } from '@nestjs/config'
 //import { Prisma } from '@prisma/client'
@@ -20,164 +19,16 @@ import {
   NestFastifyApplication,
 } from '@nestjs/platform-fastify'
 
-//const url = '/healthcheck'
-//const jsonType = 'application/json; charset=utf-8'
-
-const destroyUser = async (
-  userService: UserService,
-  prisma: PrismaService,
-  email: string,
-) => {
-  await userService.deleteUser({ email })
-  return await checkUserNotExist(prisma, email)
-}
-
-// const getExistUser = async (prisma: PrismaService, email: string) => {
-//   return await prisma.user.findUnique({
-//     where: { email },
-//   })
-// }
-
-const checkUserNotExist = async (prisma: PrismaService, email: string) => {
-  const prismaUser = await prisma.user.findUnique({
-    where: { email },
-  })
-  return expect(prismaUser).toBe(null)
-}
-
-interface FakeNewUser {
-  email: string
-  name?: string
-  password: string
-}
-
-interface MakeUserDataParams {
-  env: AppConfigService
-  crypto: CryptoService
-  userData: FakeNewUser
-}
-
-interface UserDataForDB {
-  email: string
-  password: string
-  salt: string
-  verified: boolean
-  name?: string
-}
-
-const makeUserInputData = async (
-  params: MakeUserDataParams,
-): Promise<UserDataForDB> => {
-  const { env, crypto, userData } = params
-  const saltLength = env.getSaltLength()
-  const salt = await crypto.generateSalt(saltLength)
-  const hashedPassword = await crypto.hash(userData.password, salt)
-
-  return {
-    email: userData.email,
-    password: hashedPassword,
-    salt,
-    verified: false,
-  }
-}
-
-const generateNewUser = () => {
-  return {
-    email: faker.internet.email(),
-    password: `${faker.internet.password()}Aa1$`,
-    name: faker.person.fullName(),
-  }
-}
-
-const generateRandomQuote = () => {
-  return {
-    content: faker.string.alphanumeric({ length: { min: 10, max: 210 } }),
-  }
-}
-
-const generateRandomDomain = () => {
-  return {
-    value: faker.string.alphanumeric({ length: { min: 4, max: 22 } }),
-  }
-}
-
-interface BasicInfoGeneratorParams {
-  includeFullname: boolean
-  includeCareer: boolean
-  includeEducation: boolean
-  includeLocation: boolean
-}
-
-const IncludeAllBasicInfo: BasicInfoGeneratorParams = {
-  includeFullname: true,
-  includeCareer: true,
-  includeEducation: true,
-  includeLocation: true,
-}
-
-interface FullNameInput {
-  firstName: string
-  lastName: string
-}
-
-interface CareerInput {
-  company?: string
-  role?: string
-}
-
-interface EducationInput {
-  university?: string
-  faculty?: string
-}
-
-interface LocationInput {
-  country?: string
-  region?: string
-  timeZone?: string
-}
-
-interface BasicInfoInput {
-  fullName?: FullNameInput
-  career?: CareerInput
-  education?: EducationInput
-  location?: LocationInput
-}
-
-const generateBasicInfo = (params: BasicInfoGeneratorParams) => {
-  const { includeFullname, includeCareer, includeEducation, includeLocation } =
-    params
-
-  const result: BasicInfoInput = {}
-  /* include FullName if need */
-  if (includeFullname) {
-    result.fullName = {
-      firstName: faker.person.firstName(),
-      lastName: faker.person.lastName(),
-    }
-  }
-  /* include Career if need */
-  if (includeCareer) {
-    result.career = {
-      company: faker.company.name(),
-      role: faker.person.jobTitle(),
-    }
-  }
-  /* include Education if need*/
-  if (includeEducation) {
-    result.education = {
-      university: 'University of culture and Art',
-      faculty: 'Multimedia producer',
-    }
-  }
-  if (includeLocation) {
-    result.location = {
-      country: faker.location.country(),
-      region: faker.location.city(),
-      timeZone: faker.location.timeZone().toString(),
-    }
-  }
-  return result
-}
+import {
+  generateNewUser,
+  checkUserNotExist,
+  makeUserInputData,
+  generateBasicInfo,
+  IncludeAllBasicInfo,
+  destroyUser,
+  generateRandomQuote,
+  generateRandomDomain,
+} from './user.generator'
 
 describe('UserService', () => {
   let app: INestApplication
