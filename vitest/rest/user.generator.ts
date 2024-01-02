@@ -53,7 +53,7 @@ export const generateNewUser = () => {
 
 export const generateRandomQuote = () => {
   return {
-    content: faker.string.alphanumeric({ length: { min: 10, max: 210 } }),
+    content: faker.string.alphanumeric({ length: { min: 5, max: 120 } }),
   }
 }
 

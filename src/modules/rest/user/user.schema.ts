@@ -49,7 +49,7 @@ const region = {
 }
 
 const timeZone = {
-  region: z.string().min(2).max(48).optional(),
+  timeZone: z.string().min(2).max(48).optional(),
 }
 
 const location = z.object({
@@ -74,7 +74,7 @@ const quote = z.object({
 })
 
 const value = {
-  value: z.string().min(5).max(22).optional(),
+  value: z.string().min(4).max(22).optional(),
 }
 
 const domain = z.object({
@@ -88,3 +88,4 @@ const UpsetProfileSchema = z.object({
 })
 
 export class UpsetProfileDto extends createZodDto(UpsetProfileSchema) {}
+export class GetDomainDto extends createZodDto(domain) {}

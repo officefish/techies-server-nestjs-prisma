@@ -1,5 +1,5 @@
 import { Controller, Post, Res, Req, Body, UseGuards } from '@nestjs/common'
-import { UpsetProfileDto } from './user.schema'
+import { UpsetProfileDto, GetDomainDto } from './user.schema'
 
 import {
   //ApiCreatedResponse,
@@ -85,5 +85,17 @@ export class UserController {
     }
 
     return reply.code(201).send({ statusCode: 201 })
+  }
+
+  @Post('validDomain')
+  async isValidDomain(
+    @Body() credentials: GetDomainDto,
+    //@Req() request: FastifyRequest,
+    @Res() reply: FastifyReply,
+  ) {
+    const { value } = credentials
+    const domain = await this.service.domain({ value })
+    const isValid = domain ? false : true
+    return reply.code(201).send({ statusCode: 201, isValid })
   }
 }

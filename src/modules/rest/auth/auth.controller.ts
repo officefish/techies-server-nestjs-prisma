@@ -136,6 +136,12 @@ export class AuthController {
 
     const saltLength = this.env.getSaltLength()
 
+    /* */
+    const existUser = await this.user.user({ email, verified: true })
+    if (existUser) {
+      reply.code(409).send({ statusCode: 409, message: 'CONFLICT' })
+    }
+
     try {
       const salt = await this.crypto.generateSalt(saltLength)
       const hashedPassword = await this.crypto.hash(password, salt)

@@ -68,6 +68,11 @@ export class UserService {
   }
 
   async createUser(data: Prisma.UserCreateInput): Promise<User> {
+    const user = await this.prisma.user.findUnique({
+      where: { email: data.email },
+    })
+    if (user) return user
+
     return this.prisma.user.create({
       data,
     })
@@ -320,6 +325,11 @@ export class UserService {
 
     const value = data.value || ''
 
+    if (value.length) {
+      const notUniqueValue = await this.domain({ value })
+      if (notUniqueValue) return null
+    }
+
     const domainCreateInput: Prisma.DomainCreateInput = {
       user: { connect: { id: user.id } },
       value,
@@ -334,6 +344,14 @@ export class UserService {
       where: { userId: user.id },
       create: domainCreateInput,
       update: domainUpdateInput,
+    })
+  }
+
+  async domain(
+    domainWhereUniqueInput: Prisma.DomainWhereUniqueInput,
+  ): Promise<Domain | null> {
+    return this.prisma.domain.findUnique({
+      where: domainWhereUniqueInput,
     })
   }
 }
