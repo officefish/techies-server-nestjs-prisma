@@ -1,9 +1,9 @@
 import { faker } from '@faker-js/faker'
 
-import { PrismaService } from '@/modules/prisma/prisma.service'
-import { UserService } from '@/modules/rest/user/user.service'
-import { CryptoService } from '@/modules/crypto/crypto.service'
-import { AppConfigService } from '@/modules/config/config.service'
+import { PrismaService } from '@modules/prisma/prisma.service'
+import { UserService } from '@modules/rest/user/user.service'
+import { CryptoService } from '@modules/crypto/crypto.service'
+import { AppConfigService } from '@modules/config/config.service'
 
 import { expect } from 'vitest'
 

@@ -1,7 +1,7 @@
 import { Test, TestingModule } from '@nestjs/testing'
 import { INestApplication } from '@nestjs/common'
 
-import { AppModule } from '@/modules/app/app.module'
+import { AppModule } from '@modules/app/app.module'
 
 import { describe, test, beforeAll, afterAll, expect } from 'vitest'
 
