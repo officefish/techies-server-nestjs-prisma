@@ -31,7 +31,7 @@ describe('Application healthcheck', () => {
   test('With HTTP injection', async () => {
     const response = await app.getHttpAdapter().getInstance().inject({
       method: 'GET',
-      url: '/',
+      url: '/ping',
     })
 
     expect(response.statusCode).toBe(200)

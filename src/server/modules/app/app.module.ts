@@ -13,11 +13,17 @@ import { AuthModule } from '@modules/rest/auth/auth.module'
 import { UserModule } from '@modules/rest/user/user.module'
 import { PostModule } from '@modules/rest/post/post.module'
 
+//import Next from 'next'
+//import { RenderModule } from 'nest-next'
+
 @Module({
   imports: [
     CoreModule,
     PrismaModule,
     AppConfigModule,
+    // RenderModule.forRootAsync(
+    //   Next({ dev: process.env.NODE_ENV !== 'production' }),
+    // ),
     CryptoModule,
     AccessoryModule,
     UserModule,
