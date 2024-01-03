@@ -21,14 +21,16 @@ import { PostModule } from '@modules/rest/post/post.module'
     CoreModule,
     PrismaModule,
     AppConfigModule,
-    // RenderModule.forRootAsync(
-    //   Next({ dev: process.env.NODE_ENV !== 'production' }),
-    // ),
     CryptoModule,
     AccessoryModule,
     UserModule,
     AuthModule,
     PostModule,
+    // RenderModule.forRootAsync(
+    //   Next(
+    //     Object.assign({}, { dev: process.env.NODE_ENV !== 'production' }, {}),
+    //   ),
+    // ),
   ],
   controllers: [AppController],
   providers: [AppService],

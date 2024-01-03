@@ -1,3 +1,4 @@
+import '../client/assets/globals.css'
 import { FC } from 'react'
 import { AppProps } from 'next/app'
 
