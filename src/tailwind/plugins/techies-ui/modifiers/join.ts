@@ -1,14 +1,13 @@
 export const join = {
-    
-    '.join': {
-        '@apply rounded-btn': {},
-        
-        '& > :where(*:not(:first-child))': {
-            '@apply -ml-px my-0': {}
-        },
+  '.join': {
+    '@apply rounded-btn': {},
 
-        '&-item:focus': {
-            '@apply isolate': {}
-        }
-    }
+    '& > :where(*:not(:first-child))': {
+      '@apply -ml-px my-0': {},
+    },
+
+    '&-item:focus': {
+      '@apply isolate': {},
+    },
+  },
 }

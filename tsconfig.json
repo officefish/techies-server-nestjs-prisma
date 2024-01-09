@@ -44,8 +44,10 @@
     "./src/pages/**/*.ts",
     "./src/client/**/*.ts",
     "./src/tailwind/**/*.ts",
+    "./src/server/**/*.ts",
+    "./@types/**/*.d.ts",
   ],
   "exclude": [
-    "node_modules"
+    "node_modules",
   ]
 }

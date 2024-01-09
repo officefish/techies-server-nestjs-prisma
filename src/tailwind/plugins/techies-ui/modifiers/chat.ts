@@ -1,61 +1,51 @@
-
 const setupBubble = (colorTag: string) => {
-    return {
-        [`&-${colorTag}`]: {
-            
-            [`@apply bg-${colorTag} text-${colorTag}-content`]: {},
-            
-            ':is(.dark) &': {
-                [`@apply bg-${colorTag}-dark text-${colorTag}-content-dark`]: {},
-            }
-        }
-    }
+  return {
+    [`&-${colorTag}`]: {
+      [`@apply bg-${colorTag} text-${colorTag}-content`]: {},
+      ':is(.dark) &': {
+        [`@apply bg-${colorTag}-dark text-${colorTag}-content-dark`]: {},
+      },
+    },
+  }
 }
 
 export const chat = {
-    
-    '.chat': {
+  '.chat': {
+    '&-bubble': {
+      '@apply rounded-box': {},
+      'min-height': '2.75rem',
+      'min-width': '2.75rem',
 
-        '&-bubble': {
-            '@apply rounded-box': {},
-            'min-height': '2.75rem',
-            'min-width': '2.75rem',
-        
-            /* default */
-            '&': {
-              '@apply bg-neutral text-neutral-content': {},
-              
-                ':is(.dark) &': {
-                    '@apply bg-neutral-dark text-neutral-content-dark': {},
-                }
+      /* default */
+      '&': {
+        '@apply bg-neutral text-neutral-content': {},
 
-            },
-
-            ...setupBubble('primary'),
-            ...setupBubble('secondary'),
-            ...setupBubble('accent'),
-            ...setupBubble('info'),
-            ...setupBubble('success'),
-            ...setupBubble('warning'),
-            ...setupBubble('error'),
-
+        ':is(.dark) &': {
+          '@apply bg-neutral-dark text-neutral-content-dark': {},
         },
+      },
 
-        '&-start .chat-bubble': {
-            '@apply rounded-bl-none': {},
-            '&:before': {
-                left: '-0.75rem'
-            }
-        },
+      ...setupBubble('primary'),
+      ...setupBubble('secondary'),
+      ...setupBubble('accent'),
+      ...setupBubble('info'),
+      ...setupBubble('success'),
+      ...setupBubble('warning'),
+      ...setupBubble('error'),
+    },
 
-        '&-end .chat-bubble': {
-            '@apply rounded-br-none': {},
-            '&:before': {
-                left: '100%'
-            }
-        }
+    '&-start .chat-bubble': {
+      '@apply rounded-bl-none': {},
+      '&:before': {
+        left: '-0.75rem',
+      },
+    },
 
-    }
-
-
+    '&-end .chat-bubble': {
+      '@apply rounded-br-none': {},
+      '&:before': {
+        left: '100%',
+      },
+    },
+  },
 }
