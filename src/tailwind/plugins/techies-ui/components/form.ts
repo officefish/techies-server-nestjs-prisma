@@ -1,0 +1,10 @@
+export const form = {
+    
+    '.form-control': {
+        '@apply flex flex-col': {}
+    },
+      
+    '.label': {
+        '@apply flex select-none items-center justify-between': {}
+    }
+}

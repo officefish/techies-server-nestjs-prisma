@@ -41,8 +41,9 @@
   },
   "include": [
     "next-env.d.ts",
-    "**/*.ts",
-    "**/*.tsx"
+    "./src/pages/**/*.ts",
+    "./src/client/**/*.ts",
+    "./src/tailwind/**/*.ts",
   ],
   "exclude": [
     "node_modules"
