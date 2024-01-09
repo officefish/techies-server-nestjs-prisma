@@ -1,5 +1,5 @@
 export const artboard = {
-    '.artboard': {
-        '@apply w-full': {}
-    }
+  '.artboard': {
+    '@apply w-full': {},
+  },
 }

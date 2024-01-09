@@ -1,24 +1,23 @@
 export const footer = {
-    
-    '.footer': {
-        '@apply grid w-full grid-flow-row place-items-start': {},
-        '& > *': {
-            '@apply grid place-items-start': {}
-        },
-        '&-center': {
-            '@apply place-items-center text-center': {},
-            '& > *': {
-                '@apply place-items-center': {}
-            }
-        }
+  '.footer': {
+    '@apply grid w-full grid-flow-row place-items-start': {},
+    '& > *': {
+      '@apply grid place-items-start': {},
     },
+    '&-center': {
+      '@apply place-items-center text-center': {},
+      '& > *': {
+        '@apply place-items-center': {},
+      },
+    },
+  },
 
-    '@media (min-width: 48rem)': {
-        '.footer': {
-            'grid-auto-flow': 'column'
-        },
-        '.footer-center': {
-            'grid-auto-flow': 'row dense'
-        }
-    }
+  '@media (min-width: 48rem)': {
+    '.footer': {
+      'grid-auto-flow': 'column',
+    },
+    '.footer-center': {
+      'grid-auto-flow': 'row dense',
+    },
+  },
 }

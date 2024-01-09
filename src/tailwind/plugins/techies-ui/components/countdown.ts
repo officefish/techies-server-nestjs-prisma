@@ -1,25 +1,22 @@
-
 export const countdown = {
-    
-    ':root .countdown': {
-        'line-height': '1em',
-    },
-    
-    '.countdown': {
-        
-        display: 'inline-flex',
-        
-        '& > *': {    
-            height: '1em',
-            '@apply inline-block overflow-y-hidden': {},
-            
-            '&:before': {
-                position: 'relative',
-                content: '"00\A 01\A 02\A 03\A 04\A 05\A 06\A 07\A 08\A 09\A 10\A 11\A 12\A 13\A 14\A 15\A 16\A 17\A 18\A 19\A 20\A 21\A 22\A 23\A 24\A 25\A 26\A 27\A 28\A 29\A 30\A 31\A 32\A 33\A 34\A 35\A 36\A 37\A 38\A 39\A 40\A 41\A 42\A 43\A 44\A 45\A 46\A 47\A 48\A 49\A 50\A 51\A 52\A 53\A 54\A 55\A 56\A 57\A 58\A 59\A 60\A 61\A 62\A 63\A 64\A 65\A 66\A 67\A 68\A 69\A 70\A 71\A 72\A 73\A 74\A 75\A 76\A 77\A 78\A 79\A 80\A 81\A 82\A 83\A 84\A 85\A 86\A 87\A 88\A 89\A 90\A 91\A 92\A 93\A 94\A 95\A 96\A 97\A 98\A 99\A"',
-                'white-space': 'pre',
-                top: 'calc(var(--value) * -1em)'
-            }
-        }
-    }
-}
+  ':root .countdown': {
+    'line-height': '1em',
+  },
 
+  '.countdown': {
+    display: 'inline-flex',
+
+    '& > *': {
+      height: '1em',
+      '@apply inline-block overflow-y-hidden': {},
+
+      '&:before': {
+        position: 'relative',
+        content:
+          '"00A 01A 02A 03A 04A 05A 06A 07A 08A 09A 10A 11A 12A 13A 14A 15A 16A 17A 18A 19A 20A 21A 22A 23A 24A 25A 26A 27A 28A 29A 30A 31A 32A 33A 34A 35A 36A 37A 38A 39A 40A 41A 42A 43A 44A 45A 46A 47A 48A 49A 50A 51A 52A 53A 54A 55A 56A 57A 58A 59A 60A 61A 62A 63A 64A 65A 66A 67A 68A 69A 70A 71A 72A 73A 74A 75A 76A 77A 78A 79A 80A 81A 82A 83A 84A 85A 86A 87A 88A 89A 90A 91A 92A 93A 94A 95A 96A 97A 98A 99A"',
+        'white-space': 'pre',
+        top: 'calc(var(--value) * -1em)',
+      },
+    },
+  },
+}

@@ -1,8 +1,8 @@
 export const link = {
-    '.link': {
-        '@apply cursor-pointer underline': {},
-        '&-hover': {
-            '@apply no-underline hover:underline': {}
-        }
-    }
+  '.link': {
+    '@apply cursor-pointer underline': {},
+    '&-hover': {
+      '@apply no-underline hover:underline': {},
+    },
+  },
 }
