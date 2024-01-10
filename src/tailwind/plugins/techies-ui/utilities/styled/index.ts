@@ -10,16 +10,14 @@ import { table } from './table'
 import { stat } from './stat'
 
 export const styledUtilities = {
-    ...avatar,
-    ...artboard,
-    ...buttonGroup,
-    ...card,
-    ...divider,
-    ...join,
-    ...menu,
-    ...modal,
-    ...stat,
-    ...table
+  ...avatar,
+  ...artboard,
+  ...buttonGroup,
+  ...card,
+  ...divider,
+  ...join,
+  ...menu,
+  ...modal,
+  ...stat,
+  ...table,
 }
-
-

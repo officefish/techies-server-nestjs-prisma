@@ -1,19 +1,19 @@
 export const inputGroup = {
-    '.input-group': {
-        '&-md': {
-            '@apply text-sm leading-loose': {}
-        },
+  '.input-group': {
+    '&-md': {
+      '@apply text-sm leading-loose': {},
+    },
 
-        '&-lg': {
-            '@apply text-lg leading-loose': {}
-        },
+    '&-lg': {
+      '@apply text-lg leading-loose': {},
+    },
 
-        '&-sm': {
-            '@apply text-sm leading-8': {}
-        },
+    '&-sm': {
+      '@apply text-sm leading-8': {},
+    },
 
-        '&-xs': {
-            '@apply text-xs leading-relaxed': {}
-        },
-    }
+    '&-xs': {
+      '@apply text-xs leading-relaxed': {},
+    },
+  },
 }

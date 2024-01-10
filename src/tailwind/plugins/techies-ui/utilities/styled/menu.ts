@@ -1,63 +1,62 @@
 export const menu = {
-    
-    '.menu-horizontal': {
-        '& > li:not(.menu-title) > details > ul': {
-            '@apply mt-4 ml-0 pr-2 py-2 bg-base-100 shadow-xl rounded-box': {},
-            ':is(.dark) &': {
-                '@apply  bg-base-100-dark': {},
-            }
-        },
-
-        '& > li > details > ul': {
-            '&:before': {
-                content: 'none'
-            }
-        }
+  '.menu-horizontal': {
+    '& > li:not(.menu-title) > details > ul': {
+      '@apply mt-4 ml-0 pr-2 py-2 bg-base-100 shadow-xl rounded-box': {},
+      ':is(.dark) &': {
+        '@apply  bg-base-100-dark': {},
+      },
     },
 
-    '.menu-vertical': {
-        '& > li:not(.menu-title) > details > ul': {
-            '@apply mt-0 ml-4 pr-0 py-0': {}
-        }
+    '& > li > details > ul': {
+      '&:before': {
+        content: 'none',
+      },
     },
-      
-    '.menu-xs': {
-        [`:where(li:not(.menu-title) > *:not(ul):not(details):not(.menu-title)),
+  },
+
+  '.menu-vertical': {
+    '& > li:not(.menu-title) > details > ul': {
+      '@apply mt-0 ml-4 pr-0 py-0': {},
+    },
+  },
+
+  '.menu-xs': {
+    [`:where(li:not(.menu-title) > *:not(ul):not(details):not(.menu-title)),
         :where(li:not(.menu-title) > details > summary:not(.menu-title))`]: {
-            '@apply px-2 py-1 text-xs rounded': {}
-        },
-        '.menu-title': {
-            '@apply px-2 py-1': {}
-        }
+      '@apply px-2 py-1 text-xs rounded': {},
     },
-
-    '.menu-sm': {
-        [`:where(li:not(.menu-title) > *:not(ul):not(details):not(.menu-title)),
-        :where(li:not(.menu-title) > details > summary:not(.menu-title))`]: {
-            '@apply px-3 py-1 text-sm rounded-btn': {}
-        },
-        '.menu-title': {
-            '@apply px-3 py-2': {}
-        }
+    '.menu-title': {
+      '@apply px-2 py-1': {},
     },
+  },
 
-    '.menu-md': {
-        [`:where(li:not(.menu-title) > *:not(ul):not(details):not(.menu-title)),
+  '.menu-sm': {
+    [`:where(li:not(.menu-title) > *:not(ul):not(details):not(.menu-title)),
         :where(li:not(.menu-title) > details > summary:not(.menu-title))`]: {
-            '@apply px-4 py-2 text-sm rounded-btn': {}
-        },
-        '.menu-title': {
-            '@apply px-4 py-2': {}
-        }
+      '@apply px-3 py-1 text-sm rounded-btn': {},
     },
+    '.menu-title': {
+      '@apply px-3 py-2': {},
+    },
+  },
 
-    '.menu-lg': {
-        [`:where(li:not(.menu-title) > *:not(ul):not(details):not(.menu-title)),
+  '.menu-md': {
+    [`:where(li:not(.menu-title) > *:not(ul):not(details):not(.menu-title)),
         :where(li:not(.menu-title) > details > summary:not(.menu-title))`]: {
-            '@apply px-6 py-3 text-lg rounded-btn': {}
-        },
-        '.menu-title': {
-            '@apply px-6 py-3': {}
-        }
-    }
+      '@apply px-4 py-2 text-sm rounded-btn': {},
+    },
+    '.menu-title': {
+      '@apply px-4 py-2': {},
+    },
+  },
+
+  '.menu-lg': {
+    [`:where(li:not(.menu-title) > *:not(ul):not(details):not(.menu-title)),
+        :where(li:not(.menu-title) > details > summary:not(.menu-title))`]: {
+      '@apply px-6 py-3 text-lg rounded-btn': {},
+    },
+    '.menu-title': {
+      '@apply px-6 py-3': {},
+    },
+  },
 }

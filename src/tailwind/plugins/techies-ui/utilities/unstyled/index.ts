@@ -19,36 +19,35 @@ import { range } from './range'
 import { rating } from './rating'
 import { select } from './select'
 import { stat } from './stat'
-import { tab } from "./tab"
+import { tab } from './tab'
 import { textarea } from './textarea'
 import { toast } from './toast'
 import { toggle } from './toggle'
 
 export const unstyledUtilities = {
-    ...artboard,
-    ...badge,
-    ...bottomNavigation,
-    ...button,
-    ...buttonGroup,
-    ...card,
-    ...checkbox,
-    ...divider,
-    ...fileInput,
-    ...indicator,
-    ...input,
-    ...inputGroup,
-    ...join,
-    ...loading,
-    ...menu,
-    ...modal,
-    ...radio,
-    ...range,
-    ...rating,
-    ...select,
-    ...stat,
-    ...tab,
-    ...textarea,
-    ...toggle,
-    ...toast
+  ...artboard,
+  ...badge,
+  ...bottomNavigation,
+  ...button,
+  ...buttonGroup,
+  ...card,
+  ...checkbox,
+  ...divider,
+  ...fileInput,
+  ...indicator,
+  ...input,
+  ...inputGroup,
+  ...join,
+  ...loading,
+  ...menu,
+  ...modal,
+  ...radio,
+  ...range,
+  ...rating,
+  ...select,
+  ...stat,
+  ...tab,
+  ...textarea,
+  ...toggle,
+  ...toast,
 }
-
