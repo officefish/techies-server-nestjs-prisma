@@ -11,7 +11,7 @@ import { User } from '@client/models/user.model'
 
 import { Dispatch, SetStateAction } from 'react'
 
-const API_PREFIX = 'api/v1/users'
+const API_PREFIX = 'api/v1/user'
 
 export function useUser() {
   const route = 'me'

@@ -5,8 +5,8 @@ import { JwtService } from '@nestjs/jwt/dist'
 import { JwtSignOptions, JwtVerifyOptions } from '@nestjs/jwt/dist'
 
 interface UserPayload {
-  sub: string
-  userName: string
+  userId: string
+  sessionId: string
   iat: number
 }
 

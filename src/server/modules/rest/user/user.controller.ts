@@ -1,4 +1,12 @@
-import { Controller, Post, Res, Req, Body, UseGuards } from '@nestjs/common'
+import {
+  Controller,
+  Get,
+  Post,
+  Res,
+  Req,
+  Body,
+  UseGuards,
+} from '@nestjs/common'
 import { UpsetProfileDto, GetDomainDto } from './user.schema'
 
 import {
@@ -97,5 +105,31 @@ export class UserController {
     const domain = await this.service.domain({ value })
     const isValid = domain ? false : true
     return reply.code(201).send({ statusCode: 201, isValid })
+  }
+
+  @UseGuards(AuthGuard)
+  @Get('me')
+  async getCurrentUser(
+    @Req() request: FastifyRequest,
+    @Res() reply: FastifyReply,
+  ) {
+    const id = request['userId']
+    const user = await this.service.user({ id })
+
+    if (!user) {
+      return reply
+        .code(400)
+        .send({ statusCode: 401, message: 'User not found' })
+    }
+
+    const payload = {
+      id: user?.id,
+      email: user?.email,
+      name: user?.name,
+      verified: user?.verified,
+      authenticated: true,
+      role: user?.role,
+    }
+    reply.code(201).send(payload)
   }
 }
