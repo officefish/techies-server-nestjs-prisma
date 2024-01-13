@@ -37,6 +37,8 @@ import {
   generateRandomDomain,
 } from './user.generator'
 
+const API_PREFIX = '/api/v1'
+
 describe('UserService', () => {
   let app: INestApplication
   let userService: UserService
@@ -63,6 +65,7 @@ describe('UserService', () => {
     app = moduleFixture.createNestApplication<NestFastifyApplication>(
       new FastifyAdapter(),
     )
+    app.setGlobalPrefix(API_PREFIX)
     await app.init()
     await app.getHttpAdapter().getInstance().ready()
 

@@ -25,9 +25,10 @@ export async function nextRoutes(app: INestApplication) {
   //await app.render(req.raw, reply.raw, '/log-in', {})
   //reply.hijack()
   //})
-  //server.next(`/auth/sign-in`)
-  //server.next('/auth/forgot-password')
-  //server.next('/auth/password-reset/*')
+  server.next(`/auth/sign-in`)
+  server.next(`/auth/sign-up`)
+  server.next('/auth/forgot-password')
+  server.next('/auth/password-reset/*')
   Logger.log('NEST endpoints register', 'Render')
 }
 

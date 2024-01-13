@@ -16,6 +16,8 @@ async function bootstrap() {
     AppModule,
     new FastifyAdapter(),
   )
+  // Set global prefix for api
+  app.setGlobalPrefix('/api/v1')
   // should be initialized before session
   initializeCookies(app)
   initializeSwagger(app)

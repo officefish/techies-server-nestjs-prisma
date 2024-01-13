@@ -22,6 +22,7 @@ import { User } from '@prisma/client'
 
 //const url = '/healthcheck'
 const jsonType = 'application/json; charset=utf-8'
+const API_PREFIX = '/api/v1'
 
 interface FakeNewUser {
   email: string
@@ -54,6 +55,7 @@ describe('Authorization api', () => {
     app = moduleFixture.createNestApplication<NestFastifyApplication>(
       new FastifyAdapter(),
     )
+    app.setGlobalPrefix(API_PREFIX)
     await app.init()
     await app.getHttpAdapter().getInstance().ready()
 
@@ -84,7 +86,7 @@ describe('Authorization api', () => {
       .getHttpAdapter()
       .getInstance()
       .inject()
-      .post('auth/sign-up')
+      .post(`${API_PREFIX}/auth/sign-up`)
       .payload(newUser)
 
     expect(response.statusCode).toBe(201)
@@ -135,7 +137,7 @@ describe('Authorization api', () => {
       .getHttpAdapter()
       .getInstance()
       .inject()
-      .post('auth/sign-up')
+      .post(`${API_PREFIX}/auth/sign-up`)
       .payload(newUser)
 
     expect(response.statusCode).toBe(201)
@@ -200,7 +202,7 @@ describe('Authorization api', () => {
       .getHttpAdapter()
       .getInstance()
       .inject()
-      .post('auth/sign-in')
+      .post(`${API_PREFIX}/auth/sign-in`)
       .payload(newUser)
 
     expect(response.statusCode).toBe(201)
@@ -239,7 +241,7 @@ describe('Authorization api', () => {
       .getHttpAdapter()
       .getInstance()
       .inject()
-      .post('auth/sign-in')
+      .post(`${API_PREFIX}/auth/sign-in`)
       .payload(fakeUser)
 
     expect(response.statusCode).toBe(401)
@@ -258,7 +260,7 @@ describe('Authorization api', () => {
       .getHttpAdapter()
       .getInstance()
       .inject()
-      .post('auth/sign-in')
+      .post(`${API_PREFIX}/auth/sign-in`)
       .payload(fakeUser)
 
     expect(response.statusCode).toBe(400)
@@ -278,7 +280,7 @@ describe('Authorization api', () => {
       .getHttpAdapter()
       .getInstance()
       .inject()
-      .post('auth/sign-in')
+      .post(`${API_PREFIX}/auth/sign-in`)
       .payload(fakeUser)
 
     expect(response.statusCode).toBe(400)
@@ -297,7 +299,7 @@ describe('Authorization api', () => {
       .getHttpAdapter()
       .getInstance()
       .inject()
-      .post('auth/sign-in')
+      .post(`${API_PREFIX}/auth/sign-in`)
       .payload(fakeUser)
 
     expect(response.statusCode).toBe(400)
@@ -318,7 +320,7 @@ describe('Authorization api', () => {
       .getHttpAdapter()
       .getInstance()
       .inject()
-      .post('auth/sign-up')
+      .post(`${API_PREFIX}/auth/sign-up`)
       .payload(fakeUser)
 
     expect(response.statusCode).toBe(400)
@@ -338,7 +340,7 @@ describe('Authorization api', () => {
       .getHttpAdapter()
       .getInstance()
       .inject()
-      .post('auth/sign-up')
+      .post(`${API_PREFIX}/auth/sign-up`)
       .payload(fakeUser)
 
     expect(response.statusCode).toBe(400)
@@ -357,7 +359,7 @@ describe('Authorization api', () => {
       .getHttpAdapter()
       .getInstance()
       .inject()
-      .post('auth/sign-up')
+      .post(`${API_PREFIX}/auth/sign-up`)
       .payload(fakeUser)
 
     expect(response.statusCode).toBe(400)

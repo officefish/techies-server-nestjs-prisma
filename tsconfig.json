@@ -23,6 +23,12 @@
       ],
       "@modules/*": [
         "./src/server/modules/*"
+      ],
+      "@client/*": [
+        "./src/client/*"
+      ],
+      "@public/*": [
+        "./src/public/*"
       ]
     },
     "lib": [
@@ -42,9 +48,12 @@
   "include": [
     "next-env.d.ts",
     "./src/pages/**/*.ts",
+    "./src/pages/**/*.tsx",
     "./src/client/**/*.ts",
+    "./src/client/**/*.tsx",
     "./src/tailwind/**/*.ts",
     "./src/server/**/*.ts",
+    "./vitest/**/*.ts",
     "./@types/**/*.d.ts",
   ],
   "exclude": [

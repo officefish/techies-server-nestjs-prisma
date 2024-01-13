@@ -87,7 +87,7 @@ export class UserController {
     return reply.code(201).send({ statusCode: 201 })
   }
 
-  @Post('validDomain')
+  @Post('valid-domain')
   async isValidDomain(
     @Body() credentials: GetDomainDto,
     //@Req() request: FastifyRequest,

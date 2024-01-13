@@ -38,6 +38,7 @@ import {
 } from './user.generator'
 
 const jsonType = 'application/json; charset=utf-8'
+const API_PREFIX = '/api/v1'
 
 describe('User Profile Service', () => {
   let app: INestApplication
@@ -65,6 +66,7 @@ describe('User Profile Service', () => {
     app = moduleFixture.createNestApplication<NestFastifyApplication>(
       new FastifyAdapter(),
     )
+    app.setGlobalPrefix(API_PREFIX)
     await app.init()
     await app.getHttpAdapter().getInstance().ready()
 
@@ -111,7 +113,7 @@ describe('User Profile Service', () => {
       .getHttpAdapter()
       .getInstance()
       .inject()
-      .post('user/profile')
+      .post(`${API_PREFIX}/user/profile`)
       .payload({ basicInfo: basicInfo })
 
     expect(response.statusCode).toBe(401)
@@ -135,7 +137,7 @@ describe('User Profile Service', () => {
       .getHttpAdapter()
       .getInstance()
       .inject()
-      .post('auth/sign-up')
+      .post(`${API_PREFIX}/auth/sign-up`)
       .payload(userData)
 
     expect(registerResponse.statusCode).toBe(201)
@@ -153,7 +155,7 @@ describe('User Profile Service', () => {
       .getHttpAdapter()
       .getInstance()
       .inject()
-      .post('user/profile')
+      .post(`${API_PREFIX}/user/profile`)
       .headers({ authorization: `Bearer ${token}` })
       .payload({ basicInfo: basicInfo })
 
@@ -225,7 +227,7 @@ describe('User Profile Service', () => {
       .getHttpAdapter()
       .getInstance()
       .inject()
-      .post('auth/sign-up')
+      .post(`${API_PREFIX}/auth/sign-up`)
       .payload(userData)
 
     expect(registerResponse.statusCode).toBe(201)
@@ -243,7 +245,7 @@ describe('User Profile Service', () => {
       .getHttpAdapter()
       .getInstance()
       .inject()
-      .post('user/profile')
+      .post(`${API_PREFIX}/user/profile`)
       .headers({ authorization: `Bearer ${token}` })
       .payload({ quote: quote })
 
@@ -279,7 +281,7 @@ describe('User Profile Service', () => {
       .getHttpAdapter()
       .getInstance()
       .inject()
-      .post('auth/sign-up')
+      .post(`${API_PREFIX}/auth/sign-up`)
       .payload(userData)
 
     expect(registerResponse.statusCode).toBe(201)
@@ -297,7 +299,7 @@ describe('User Profile Service', () => {
       .getHttpAdapter()
       .getInstance()
       .inject()
-      .post('user/profile')
+      .post(`${API_PREFIX}/user/profile`)
       .headers({ authorization: `Bearer ${token}` })
       .payload({ domain })
 
@@ -333,7 +335,7 @@ describe('User Profile Service', () => {
       .getHttpAdapter()
       .getInstance()
       .inject()
-      .post('auth/sign-up')
+      .post(`${API_PREFIX}/auth/sign-up`)
       .payload(userData)
 
     expect(registerResponse.statusCode).toBe(201)
@@ -351,7 +353,7 @@ describe('User Profile Service', () => {
       .getHttpAdapter()
       .getInstance()
       .inject()
-      .post('user/profile')
+      .post(`${API_PREFIX}/user/profile`)
       .headers({ authorization: `Bearer ${token}` })
       .payload({ domain })
 
@@ -379,7 +381,7 @@ describe('User Profile Service', () => {
       .getHttpAdapter()
       .getInstance()
       .inject()
-      .post('user/validDomain')
+      .post(`${API_PREFIX}/user/valid-domain`)
       .payload(domain)
 
     expect(validDomainResponse.statusCode).toBe(201)
@@ -423,7 +425,7 @@ describe('User Profile Service', () => {
       .getHttpAdapter()
       .getInstance()
       .inject()
-      .post('auth/sign-up')
+      .post(`${API_PREFIX}/auth/sign-up`)
       .payload(secondUserData)
 
     expect(registerResponse.statusCode).toBe(201)
@@ -439,7 +441,7 @@ describe('User Profile Service', () => {
       .getHttpAdapter()
       .getInstance()
       .inject()
-      .post('user/profile')
+      .post(`${API_PREFIX}/user/profile`)
       .headers({ authorization: `Bearer ${token}` })
       .payload({ domain })
 

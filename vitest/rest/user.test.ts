@@ -23,6 +23,7 @@ import {
 
 //const url = '/healthcheck'
 //const jsonType = 'application/json; charset=utf-8'
+const API_PREFIX = '/api/v1'
 
 const destroyUser = async (prisma: PrismaService, email: string) => {
   await prisma.user.delete({
@@ -115,6 +116,7 @@ describe('UserService', () => {
     app = moduleFixture.createNestApplication<NestFastifyApplication>(
       new FastifyAdapter(),
     )
+    app.setGlobalPrefix(API_PREFIX)
     await app.init()
     await app.getHttpAdapter().getInstance().ready()
 
