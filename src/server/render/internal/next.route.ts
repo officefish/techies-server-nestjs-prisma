@@ -18,6 +18,7 @@ export async function nextRoutes(app: INestApplication) {
   await server.after()
   server.next('/')
   server.next('/me')
+  server.next('/me/settings')
 
   //server.next(`/auth/log-in`, async (app:NextServer, req:FastifyRequest, reply:FastifyReply) => {
   // here we potentialy can forward fastify instance to req.raw
