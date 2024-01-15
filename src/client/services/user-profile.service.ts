@@ -7,7 +7,7 @@ interface ISuccessResponse {
 }
 
 const API_PREFIX = 'api/v1/'
-const DIRECTORY = 'user-profile'
+const DIRECTORY = 'user/profile'
 
 export const useUpdateProfile = () => {
   const {

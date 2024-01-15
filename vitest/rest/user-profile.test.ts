@@ -15,6 +15,7 @@ import { JwtService } from '@nestjs/jwt'
 import {
   describe,
   test,
+  //it,
   beforeAll,
   afterAll,
   expect,
@@ -75,27 +76,6 @@ describe('User Profile Service', () => {
     crypto = await moduleFixture.get<CryptoService>(CryptoService)
     userService = await moduleFixture.get<UserService>(UserService)
   })
-
-  /*
-  test('Fail SignIn request with invalid request data', async () => {
-    const fakeUser = {
-      invalid: true,
-    }
-    const response = await app
-      .getHttpAdapter()
-      .getInstance()
-      .inject()
-      .post('auth/sign-in')
-      .payload(fakeUser)
-
-    expect(response.statusCode).toBe(400)
-    expect(response.headers['content-type']).toBe(jsonType)
-    const json = response.json()
-    expect(json).haveOwnProperty('statusCode')
-    expect(json).haveOwnProperty('message')
-    expect(json).haveOwnProperty('errors')
-  })
-  */
 
   test('Fail Create User BasicInfo with (POST) :: UserProfile without JWT', async () => {
     const userData = generateNewUser()
@@ -452,6 +432,113 @@ describe('User Profile Service', () => {
 
     await destroyUser(userService, prisma, firstUserData.email)
     await destroyUser(userService, prisma, secondUserData.email)
+  })
+
+  test('Fail Get() ::profile with unouthorized user', async () => {
+    const userData = generateNewUser()
+
+    /* Sure user not exist in db */
+    await checkUserNotExist(prisma, userData.email)
+
+    const registerResponse = await app
+      .getHttpAdapter()
+      .getInstance()
+      .inject()
+      .post(`${API_PREFIX}/auth/sign-up`)
+      .payload(userData)
+
+    expect(registerResponse.statusCode).toBe(201)
+
+    const response = await app
+      .getHttpAdapter()
+      .getInstance()
+      .inject()
+      .get(`${API_PREFIX}/user/profile`)
+
+    expect(response.statusCode).toBe(401)
+    expect(response.headers['content-type']).toBe(jsonType)
+    const json = response.json()
+    expect(json).haveOwnProperty('statusCode')
+    expect(json).haveOwnProperty('message')
+    expect(json['statusCode'] == 401).toBe(true)
+    expect(json['message'] == 'Unauthorized').toBe(true)
+
+    await destroyUser(userService, prisma, userData.email)
+  })
+
+  test('Get() ::profile Success get User Profile', async () => {
+    const userData = generateNewUser()
+
+    /* Sure user not exist in db */
+    await checkUserNotExist(prisma, userData.email)
+
+    const registerResponse = await app
+      .getHttpAdapter()
+      .getInstance()
+      .inject()
+      .post(`${API_PREFIX}/auth/sign-up`)
+      .payload(userData)
+
+    expect(registerResponse.statusCode).toBe(201)
+    expect(registerResponse.headers['content-type']).toBe(jsonType)
+    let json = registerResponse.json()
+    expect(json).haveOwnProperty('payload')
+    expect(json.payload).haveOwnProperty('accessToken')
+
+    const token = json?.payload?.accessToken || undefined
+    expect(token).toBeDefined()
+
+    const basicInfo = generateBasicInfo(IncludeAllBasicInfo)
+    const quote = generateRandomQuote()
+    const domain = generateRandomDomain()
+
+    await app
+      .getHttpAdapter()
+      .getInstance()
+      .inject()
+      .post(`${API_PREFIX}/user/profile`)
+      .headers({ authorization: `Bearer ${token}` })
+      .payload({ basicInfo, quote, domain })
+
+    const response = await app
+      .getHttpAdapter()
+      .getInstance()
+      .inject()
+      .get(`${API_PREFIX}/user/profile`)
+      .headers({ authorization: `Bearer ${token}` })
+
+    expect(response.statusCode).toBe(201)
+    expect(response.headers['content-type']).toBe(jsonType)
+    json = response.json()
+    expect(json).haveOwnProperty('payload')
+    expect(json.payload).haveOwnProperty('basicInfo')
+    expect(json.payload).haveOwnProperty('quote')
+    expect(json.payload).haveOwnProperty('domain')
+
+    const responseBasicInfo = json.payload.basicInfo
+    expect(basicInfo.fullName.firstName).equal(
+      responseBasicInfo.fullName.firstName,
+    )
+    expect(basicInfo.fullName.lastName).equal(
+      responseBasicInfo.fullName.lastName,
+    )
+    expect(basicInfo.career.company).equal(responseBasicInfo.career.company)
+    expect(basicInfo.career.role).equal(responseBasicInfo.career.role)
+
+    expect(basicInfo.education.university).equal(
+      responseBasicInfo.education.university,
+    )
+    expect(basicInfo.education.faculty).equal(
+      responseBasicInfo.education.faculty,
+    )
+
+    expect(basicInfo.location.country).equal(responseBasicInfo.location.country)
+    expect(basicInfo.location.region).equal(responseBasicInfo.location.region)
+    expect(basicInfo.location.timeZone).equal(
+      responseBasicInfo.location.timeZone,
+    )
+
+    await destroyUser(userService, prisma, userData.email)
   })
 
   afterAll(async () => {

@@ -45,7 +45,7 @@ export class AccessoryService {
   async verifyAsync(token: string): Promise<string | undefined> {
     const options = { secret: this.env.getJwtSignature() }
     const payload = await this.crypto.verifyAsync(token, options)
-    const id = payload.userId || undefined
+    const id = payload.userId || payload.sub || undefined
     return id
   }
 

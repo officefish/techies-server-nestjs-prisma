@@ -347,6 +347,54 @@ export class UserService {
     })
   }
 
+  async basicInfo(
+    input: Prisma.BasicInfoWhereUniqueInput,
+  ): Promise<BasicInfo | null> {
+    return this.prisma.basicInfo.findUnique({
+      where: input,
+    })
+  }
+
+  async basicInfoJson(basicInfoId: string): Promise<BasicInfoInput> {
+    const fullName = await this.prisma.fullName.findUnique({
+      where: { basicInfoId },
+    })
+    const career = await this.prisma.career.findUnique({
+      where: { basicInfoId },
+    })
+    const education = await this.prisma.education.findUnique({
+      where: { basicInfoId },
+    })
+    const location = await this.prisma.location.findUnique({
+      where: { basicInfoId },
+    })
+    return {
+      fullName: {
+        firstName: fullName?.firstName || null,
+        lastName: fullName?.lastName || null,
+      },
+      career: {
+        company: career?.company || null,
+        role: career?.role || null,
+      },
+      education: {
+        university: education?.university || null,
+        faculty: education?.faculty || null,
+      },
+      location: {
+        region: location?.region || null,
+        country: location?.country || null,
+        timeZone: location?.timeZone || null,
+      },
+    }
+  }
+
+  async quote(input: Prisma.QuoteWhereUniqueInput): Promise<Quote | null> {
+    return this.prisma.quote.findUnique({
+      where: input,
+    })
+  }
+
   async domain(
     domainWhereUniqueInput: Prisma.DomainWhereUniqueInput,
   ): Promise<Domain | null> {

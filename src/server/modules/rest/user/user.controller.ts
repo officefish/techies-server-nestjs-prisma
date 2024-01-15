@@ -7,11 +7,12 @@ import {
   Body,
   UseGuards,
 } from '@nestjs/common'
+
 import { UpsetProfileDto, GetDomainDto } from './user.schema'
 
 import {
   //ApiCreatedResponse,
-  //ApiResponse,
+  ApiResponse,
   //ApiBody,
   ApiTags,
 } from '@nestjs/swagger'
@@ -131,5 +132,43 @@ export class UserController {
       role: user?.role,
     }
     reply.code(201).send(payload)
+  }
+
+  @UseGuards(AuthGuard)
+  @ApiResponse({
+    status: 201,
+    description: 'SUCCESS',
+    type: UpsetProfileDto,
+  })
+  // // @ApiResponse({
+  // //   status: 401,
+  // //   description: 'User not found.',
+  // //   //type: UpsetProfileDto,
+  // // })
+  @Get('profile')
+  async getCurrentUserProfile(
+    @Req() request: FastifyRequest,
+    @Res() reply: FastifyReply,
+  ) {
+    const id = request['userId']
+    const user = await this.service.user({ id })
+
+    if (!user) {
+      return reply
+        .code(401)
+        .send({ statusCode: 401, message: 'User not found' })
+    }
+
+    const basicInfo = await this.service.basicInfo({ userId: id })
+    const basicInfoJson = await this.service.basicInfoJson(basicInfo.id)
+    const quote = await this.service.quote({ userId: id })
+    const domain = await this.service.domain({ userId: id })
+
+    const payload = {
+      basicInfo: basicInfoJson,
+      quote: { content: quote.content },
+      domain: { value: domain.value },
+    }
+    reply.code(201).send({ payload })
   }
 }
