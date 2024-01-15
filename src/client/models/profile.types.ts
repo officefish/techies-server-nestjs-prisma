@@ -34,7 +34,7 @@ export interface IBasicInfo {
 }
 
 export interface IQuote {
-  value?: string
+  content?: string
 }
 
 export interface IDomain {

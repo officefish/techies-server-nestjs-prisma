@@ -1,5 +1,6 @@
 import { FC } from 'react'
-import { useUser } from '@client/services/user.service'
+//import { useUser } from '@client/services/user.service'
+import { useUserProfile } from '@client/services/user-profile.service'
 //import { StaticImageData } from "next/image"
 
 import {
@@ -54,17 +55,18 @@ const headerData: IHeaderStatsData = {
 }
 
 const Profile: FC = () => {
-  const { user } = useUser()
+  //const { user } = useUser()
+  const { userProfile } = useUserProfile()
   return (
     <>
-      {user ? (
+      {userProfile ? (
         <div className="relative">
           <Cover background={background} />
           <ProfileLayout avatar={avatar}>
             <Header stats={headerData} />
             <BasicInfo data={basicInfoData} />
             <ProfileDelimeter />
-            <ProfileQuote value={quoteData} />
+            <ProfileQuote content={quoteData} />
             <ResentActivities />
           </ProfileLayout>
         </div>

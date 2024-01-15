@@ -1,4 +1,5 @@
 import { StaticImageData } from 'next/image'
+import { IBasicInfo, IQuote, IDomain } from './profile.types'
 /**
  * Model User
  *
@@ -24,4 +25,10 @@ export interface User extends UserMin {
   verified: boolean
   authenticated: boolean
   role: Role
+}
+
+export interface UserProfile {
+  basicInfo: IBasicInfo
+  quote: IQuote
+  domain: IDomain
 }

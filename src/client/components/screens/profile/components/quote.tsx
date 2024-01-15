@@ -3,11 +3,11 @@ import { QuoteContainer, QuoteWrapper, QuoteParagraph } from '../styled-profile'
 
 import { IQuote } from '@client/models/profile.types'
 
-const ProfileQuote: FC<IQuote> = ({ value }) => {
+const ProfileQuote: FC<IQuote> = ({ content }) => {
   return (
     <QuoteContainer>
       <QuoteWrapper>
-        <QuoteParagraph>{value}</QuoteParagraph>
+        <QuoteParagraph>{content}</QuoteParagraph>
       </QuoteWrapper>
     </QuoteContainer>
   )
