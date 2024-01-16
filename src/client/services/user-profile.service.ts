@@ -12,17 +12,17 @@ const DIRECTORY = 'user/profile'
 
 export const useUpdateProfile = () => {
   const {
-    onSubmit: updateSettings,
-    data: updateSettingsResponse,
-    serverError: updateSettingsError,
+    onSubmit: updateUserProfile,
+    data: updateUserProfileResponse,
+    serverError: updateUserProfileError,
   } = useAxios_POST_RawData<ISuccessResponse>({
     api: API_PREFIX,
     route: `${DIRECTORY}`,
   })
   return {
-    updateSettings,
-    updateSettingsResponse,
-    updateSettingsError,
+    updateUserProfile,
+    updateUserProfileResponse,
+    updateUserProfileError,
   }
 }
 

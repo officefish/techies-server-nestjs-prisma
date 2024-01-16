@@ -10,7 +10,7 @@ import { StyledSettingsTab } from '../styled-profile'
 
 import { useUserProfile } from '@client/services/user-profile.service'
 
-const avatar = 'public/team-2-800x800.jpg'
+const avatar = '/public/team-2-800x800.jpg'
 import VisualsSettings from './visuals'
 import { useUserProfileStore } from '@/client/providers'
 const background =

@@ -326,8 +326,10 @@ export class UserService {
     const value = data.value || ''
 
     if (value.length) {
-      const notUniqueValue = await this.domain({ value })
-      if (notUniqueValue) return null
+      const domain = await this.domain({ value })
+      if (domain) {
+        return domain.userId == user.id ? domain : null
+      }
     }
 
     const domainCreateInput: Prisma.DomainCreateInput = {

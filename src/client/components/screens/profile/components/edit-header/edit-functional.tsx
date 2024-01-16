@@ -10,66 +10,88 @@ import { useUpdateProfile } from '@client/services/user-profile.service'
 
 import { StyledFunctional, SettingsButton } from '../../styled-profile'
 import { UserProfile } from '@/client/models/user.model'
-// import {
-//   IAvatar,
-//   ICareer,
-//   ICover,
-//   IDomain,
-//   IEducation,
-//   IFullName,
-//   ILocation,
-//   IQuote,
-//   ITartan,
-// } from '@client/models/profile.types'
+import {
+  //IBasicInfo,
+  ICareer,
+  IDomain,
+  IEducation,
+  IFullName,
+  ILocation,
+  IQuote,
+} from '@/client/models/profile.types'
 
-// interface ISettings {
-//   fullName: {
-//     value?: IFullName
-//     valid: boolean
-//   }
-//   career: {
-//     value?: ICareer
-//     valid: boolean
-//   }
-//   location: {
-//     value?: ILocation
-//     valid: boolean
-//   }
-//   education: {
-//     value?: IEducation
-//     valid: boolean
-//   }
-//   quote: {
-//     value?: IQuote
-//     valid: boolean
-//   }
+interface UserProfileDataProps {
+  fullName: IFullName
+  education: IEducation
+  career: ICareer
+  location: ILocation
+  quote: IQuote
+  domain: IDomain
+}
 
-//   domain: {
-//     value?: IDomain
-//     valid: boolean
-//   }
+const prepareUserProfileData = (props: UserProfileDataProps): UserProfile => {
+  const { fullName, education, career, location, quote, domain } = props
+  const fullNameData: IFullName = {
+    firstName:
+      fullName.firstName && fullName.firstName.length
+        ? fullName.firstName
+        : undefined,
+    lastName:
+      fullName.lastName && fullName.lastName.length
+        ? fullName.lastName
+        : undefined,
+  }
 
-//   avatar: {
-//     value?: IAvatar
-//     valid: boolean
-//   }
+  const locationData: ILocation = {
+    country:
+      location.country && location.country.length
+        ? location.country
+        : undefined,
+    region:
+      location.region && location.region.length ? location.region : undefined,
+    timeZone:
+      location.timeZone && location.timeZone.length
+        ? location.timeZone
+        : undefined,
+  }
 
-//   cover: {
-//     value?: ICover
-//     valid: boolean
-//   }
+  const careerData: ICareer = {
+    company:
+      career.company && career.company.length ? career.company : undefined,
+    role: career.role && career.role.length ? career.role : undefined,
+  }
 
-//   tartan: {
-//     value?: ITartan
-//     valid: boolean
-//   }
-// }
+  const educationData: IEducation = {
+    university:
+      education.university && education.university.length
+        ? education.university
+        : undefined,
+    faculty:
+      education.faculty && education.faculty.length
+        ? education.faculty
+        : undefined,
+  }
+
+  return {
+    basicInfo: {
+      fullName: fullNameData,
+      location: locationData,
+      career: careerData,
+      education: educationData,
+    },
+    quote,
+    domain,
+  }
+}
 
 const EditHeaderFunctional: FC = () => {
   const [invalidData, setInvalidData] = useState(false)
 
-  const { updateSettings, updateSettingsResponse, updateSettingsError } =
-    useUpdateProfile()
+  const {
+    updateUserProfile,
+    updateUserProfileResponse,
+    updateUserProfileError,
+  } = useUpdateProfile()
 
   const {
     isValidFullName,
@@ -105,23 +127,15 @@ const EditHeaderFunctional: FC = () => {
 
     if (!invalidData) return
 
-    //console.log(fullName)
-
-    const data: UserProfile = {
-      basicInfo: {
-        fullName,
-        location,
-        career,
-        education,
-      },
-      quote: quote,
-      domain: domain,
-    }
-
-    //console.log(data)
-
-    // send data to server
-    updateSettings(data)
+    const data = prepareUserProfileData({
+      fullName,
+      location,
+      career,
+      education,
+      quote,
+      domain,
+    })
+    updateUserProfile(data)
   }
 
   useEffect(() => {
@@ -150,27 +164,27 @@ const EditHeaderFunctional: FC = () => {
   ])
 
   useEffect(() => {
-    if (updateSettingsResponse) {
+    if (updateUserProfileResponse) {
       if (
-        updateSettingsResponse.status &&
-        updateSettingsResponse.status === 'ok'
+        updateUserProfileResponse.status &&
+        updateUserProfileResponse.status === 'ok'
       ) {
         router.push('/me')
       } else if (
-        updateSettingsResponse.statusCode &&
-        updateSettingsResponse.statusCode === 201
+        updateUserProfileResponse.statusCode &&
+        updateUserProfileResponse.statusCode === 201
       ) {
         router.push('/me')
       }
     }
-  }, [updateSettingsResponse])
+  }, [updateUserProfileResponse])
 
   useEffect(() => {
-    if (updateSettingsError) {
+    if (updateUserProfileError) {
       console.log('some server error scenario here')
-      console.log(updateSettingsError)
+      console.log(updateUserProfileError)
     }
-  }, [updateSettingsError])
+  }, [updateUserProfileError])
 
   return (
     <StyledFunctional>

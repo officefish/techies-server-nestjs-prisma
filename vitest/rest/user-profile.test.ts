@@ -510,12 +510,11 @@ describe('User Profile Service', () => {
     expect(response.statusCode).toBe(201)
     expect(response.headers['content-type']).toBe(jsonType)
     json = response.json()
-    expect(json).haveOwnProperty('payload')
-    expect(json.payload).haveOwnProperty('basicInfo')
-    expect(json.payload).haveOwnProperty('quote')
-    expect(json.payload).haveOwnProperty('domain')
+    expect(json).haveOwnProperty('basicInfo')
+    expect(json).haveOwnProperty('quote')
+    expect(json).haveOwnProperty('domain')
 
-    const responseBasicInfo = json.payload.basicInfo
+    const responseBasicInfo = json.basicInfo
     expect(basicInfo.fullName.firstName).equal(
       responseBasicInfo.fullName.firstName,
     )
