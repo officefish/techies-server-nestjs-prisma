@@ -13,13 +13,13 @@ import {
   StyledSettingsInput,
 } from '../../styled-profile'
 
-import { useProfileSettingStore } from '@client/providers'
+import { useUserProfileStore } from '@client/providers'
 
 const StatusDomain: FC = () => {
   const { ref, isComponentOutside } = useComponentOutside(true)
   const [forseCollapse, setForseCollapse] = useState(false)
 
-  const { domain, setDomain, invalidDomain } = useProfileSettingStore()
+  const { domain, setDomain, invalidDomain } = useUserProfileStore()
 
   const handleOnChangeDomain = (e: ChangeEvent<HTMLInputElement>) => {
     e.preventDefault()

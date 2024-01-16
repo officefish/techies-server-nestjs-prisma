@@ -4,65 +4,66 @@ import { useRouter } from 'next/router'
 import { faGear } from '@fortawesome/free-solid-svg-icons'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 
-import { useProfileSettingStore } from '@client/providers'
+import { useUserProfileStore } from '@client/providers'
 
 import { useUpdateProfile } from '@client/services/user-profile.service'
 
 import { StyledFunctional, SettingsButton } from '../../styled-profile'
-import {
-  IAvatar,
-  ICareer,
-  ICover,
-  IDomain,
-  IEducation,
-  IFullName,
-  ILocation,
-  IQuote,
-  ITartan,
-} from '@client/models/profile.types'
+import { UserProfile } from '@/client/models/user.model'
+// import {
+//   IAvatar,
+//   ICareer,
+//   ICover,
+//   IDomain,
+//   IEducation,
+//   IFullName,
+//   ILocation,
+//   IQuote,
+//   ITartan,
+// } from '@client/models/profile.types'
 
-interface ISettings {
-  fullName: {
-    value?: IFullName
-    valid: boolean
-  }
-  career: {
-    value?: ICareer
-    valid: boolean
-  }
-  location: {
-    value?: ILocation
-    valid: boolean
-  }
-  education: {
-    value?: IEducation
-    valid: boolean
-  }
-  quote: {
-    value?: IQuote
-    valid: boolean
-  }
+// interface ISettings {
+//   fullName: {
+//     value?: IFullName
+//     valid: boolean
+//   }
+//   career: {
+//     value?: ICareer
+//     valid: boolean
+//   }
+//   location: {
+//     value?: ILocation
+//     valid: boolean
+//   }
+//   education: {
+//     value?: IEducation
+//     valid: boolean
+//   }
+//   quote: {
+//     value?: IQuote
+//     valid: boolean
+//   }
 
-  domain: {
-    value?: IDomain
-    valid: boolean
-  }
+//   domain: {
+//     value?: IDomain
+//     valid: boolean
+//   }
 
-  avatar: {
-    value?: IAvatar
-    valid: boolean
-  }
+//   avatar: {
+//     value?: IAvatar
+//     valid: boolean
+//   }
 
-  cover: {
-    value?: ICover
-    valid: boolean
-  }
+//   cover: {
+//     value?: ICover
+//     valid: boolean
+//   }
 
-  tartan: {
-    value?: ITartan
-    valid: boolean
-  }
-}
+//   tartan: {
+//     value?: ITartan
+//     valid: boolean
+//   }
+// }
 
 const EditHeaderFunctional: FC = () => {
   const [invalidData, setInvalidData] = useState(false)
@@ -87,10 +88,10 @@ const EditHeaderFunctional: FC = () => {
     education,
     quote,
     domain,
-    avatar,
-    cover,
-    tartan,
-  } = useProfileSettingStore()
+    //avatar,
+    //cover,
+    //tartan,
+  } = useUserProfileStore()
 
   const router = useRouter()
 
@@ -104,44 +105,20 @@ const EditHeaderFunctional: FC = () => {
 
     if (!invalidData) return
 
-    const data: ISettings = {
-      fullName: {
-        value: fullName,
-        valid: isValidFullName,
+    //console.log(fullName)
+
+    const data: UserProfile = {
+      basicInfo: {
+        fullName,
+        location,
+        career,
+        education,
       },
-      career: {
-        value: career,
-        valid: isValidCareer,
-      },
-      location: {
-        value: location,
-        valid: isValidLocation,
-      },
-      education: {
-        value: education,
-        valid: isValidEducation,
-      },
-      quote: {
-        value: quote,
-        valid: isValidQuote,
-      },
-      domain: {
-        value: domain,
-        valid: isValidDomain,
-      },
-      avatar: {
-        value: avatar,
-        valid: isValidAvatar,
-      },
-      cover: {
-        value: cover,
-        valid: isValidCover,
-      },
-      tartan: {
-        value: tartan,
-        valid: isValidTartan,
-      },
+      quote: quote,
+      domain: domain,
     }
+
+    //console.log(data)
 
     // send data to server
     updateSettings(data)
@@ -178,7 +155,11 @@ const EditHeaderFunctional: FC = () => {
         updateSettingsResponse.status &&
         updateSettingsResponse.status === 'ok'
       ) {
-        //console.log('response', updateSettingsResponse)
+        router.push('/me')
+      } else if (
+        updateSettingsResponse.statusCode &&
+        updateSettingsResponse.statusCode === 201
+      ) {
         router.push('/me')
       }
     }
@@ -186,7 +167,8 @@ const EditHeaderFunctional: FC = () => {
 
   useEffect(() => {
     if (updateSettingsError) {
-      //console.log('some server error scenario here')
+      console.log('some server error scenario here')
+      console.log(updateSettingsError)
     }
   }, [updateSettingsError])
 

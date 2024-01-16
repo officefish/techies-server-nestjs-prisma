@@ -3,6 +3,7 @@ import {
   initializeSwagger,
   initializeCookies,
   initializeSession,
+  initializeStaticAssets,
 } from './bootstrap'
 import { initializeNext, nextRoutes } from './render'
 import { AppModule } from './modules/app/app.module'
@@ -22,10 +23,13 @@ async function bootstrap() {
   initializeCookies(app)
   initializeSwagger(app)
   initializeSession(app)
-  //app.getHttpAdapter().
+  initializeStaticAssets(app)
 
+  //app.getHttpAdapter().
   initializeNext(app)
   await nextRoutes(app)
+
+  //
 
   await app.listen(8001)
 }

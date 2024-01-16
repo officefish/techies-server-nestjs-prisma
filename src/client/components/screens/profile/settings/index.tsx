@@ -1,4 +1,4 @@
-import { FC, MouseEvent, PropsWithChildren, useState } from 'react'
+import { FC, MouseEvent, PropsWithChildren, useEffect, useState } from 'react'
 //import useOnlyWithUser from "@client/hooks/with-user-only"
 
 import { Cover, ProfileLayout, EditHeader } from '../components'
@@ -8,8 +8,11 @@ import StatusSettings from './status'
 
 import { StyledSettingsTab } from '../styled-profile'
 
-import avatar from '@public/team-2-800x800.jpg'
+import { useUserProfile } from '@client/services/user-profile.service'
+
+const avatar = 'public/team-2-800x800.jpg'
 import VisualsSettings from './visuals'
+import { useUserProfileStore } from '@/client/providers'
 const background =
   'https://images.unsplash.com/photo-1499336315816-097655dcfbda'
 
@@ -24,6 +27,28 @@ enum ESettingsMode {
 
 const ProfileSettings: FC = () => {
   //const { mutate } = useOnlyWithUser()
+
+  const { userProfile } = useUserProfile()
+  const {
+    setFullName,
+    setCareer,
+    setEducation,
+    setLocation,
+    setQuote,
+    setDomain,
+    //setCover,
+    //setAvatar,
+    //setTartan
+  } = useUserProfileStore()
+
+  useEffect(() => {
+    setFullName(userProfile.basicInfo.fullName)
+    setCareer(userProfile.basicInfo.career)
+    setEducation(userProfile.basicInfo.education)
+    setLocation(userProfile.basicInfo.location)
+    setQuote(userProfile.quote)
+    setDomain(userProfile.domain)
+  }, [userProfile])
 
   const [settingsMode, setSettingsMode] = useState<ESettingsMode>(
     ESettingsMode.BasicInfo,

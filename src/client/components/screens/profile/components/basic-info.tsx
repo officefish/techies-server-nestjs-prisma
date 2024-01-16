@@ -23,7 +23,7 @@ interface BasicInfoProps {
 }
 
 const isComplete = (data?: IBasicInfo): boolean => {
-  if (data === undefined) return false
+  if (data === undefined || data === null) return false
 
   const isFullName = data.fullName.firstName !== undefined
   const isLocation = data.location.country !== undefined
@@ -34,7 +34,7 @@ const isComplete = (data?: IBasicInfo): boolean => {
 
 const fullNameAsString = (fullName: IFullName) => {
   let fullNameStr = fullName.firstName as string
-  fullNameStr += fullName.secondName ? ` ${fullName.secondName}.` : '.'
+  fullNameStr += fullName.lastName ? ` ${fullName.lastName}.` : '.'
   return fullNameStr
 }
 

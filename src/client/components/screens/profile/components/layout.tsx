@@ -1,6 +1,6 @@
 import { FC, PropsWithChildren } from 'react'
 import Avatar from './avatar'
-import { StaticImageData } from 'next/image'
+//import { StaticImageData } from 'next/image'
 
 import {
   StyledProfileLayout,
@@ -9,7 +9,7 @@ import {
 } from '../styled-profile'
 
 interface AvatarProps {
-  avatar?: StaticImageData
+  avatar?: string
 }
 
 const ProfileLayout: FC<PropsWithChildren<AvatarProps>> = ({

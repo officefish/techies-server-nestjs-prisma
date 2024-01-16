@@ -1,5 +1,5 @@
 import { FC } from 'react'
-import Image, { StaticImageData } from 'next/image'
+import Image from 'next/image'
 
 import {
   StyledAvatarLayout,
@@ -8,7 +8,7 @@ import {
 } from '../styled-profile'
 
 interface AvatarProps {
-  avatar: StaticImageData
+  avatar: string
 }
 
 const Avatar: FC<AvatarProps> = ({ avatar }) => {
@@ -17,7 +17,7 @@ const Avatar: FC<AvatarProps> = ({ avatar }) => {
       <StyledAvatarWrapper>
         <Image
           alt="avatar"
-          src={avatar.src}
+          src={avatar}
           width={120}
           height={120}
           className={AvatarImageClasses}

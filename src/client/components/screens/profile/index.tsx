@@ -12,38 +12,41 @@ import {
   ResentActivities,
 } from './components'
 
-import { IBasicInfo, IHeaderStatsData } from '@client/models/profile.types'
+import {
+  //IBasicInfo,
+  IHeaderStatsData,
+} from '@client/models/profile.types'
 
 import { ProfileDelimeter } from './styled-profile'
 
-const basicInfoData: IBasicInfo = {
-  fullName: {
-    firstName: 'Sergey',
-    secondName: 'Inozemcev',
-  },
-  location: {
-    country: 'Russia',
-    region: 'Saint-Petersbourg',
-  },
-  career: {
-    company: 'Techies',
-    role: 'Independent developer',
-  },
-  education: {
-    university: 'University of Culture and Art',
-    faculty: 'Multimedia producer',
-  },
-}
+// const basicInfoData: IBasicInfo = {
+//   fullName: {
+//     firstName: 'Sergey',
+//     secondName: 'Inozemcev',
+//   },
+//   location: {
+//     country: 'Russia',
+//     region: 'Saint-Petersbourg',
+//   },
+//   career: {
+//     company: 'Techies',
+//     role: 'Independent developer',
+//   },
+//   education: {
+//     university: 'University of Culture and Art',
+//     faculty: 'Multimedia producer',
+//   },
+// }
 
-const quoteData = `
-An artist of considerable range, Jenna the name taken by
-Melbourne-raised, Brooklyn-based Nick Murphy writes,
-performs and records all of his own music, giving it a
-warm, intimate feel with a solid groove structure. An
-artist of considerable range.
-`
+// const quoteData = `
+// An artist of considerable range, Jenna the name taken by
+// Melbourne-raised, Brooklyn-based Nick Murphy writes,
+// performs and records all of his own music, giving it a
+// warm, intimate feel with a solid groove structure. An
+// artist of considerable range.
+// `
 
-import avatar from '@public/team-2-800x800.jpg'
+const avatar = '/public/team-2-800x800.jpg'
 
 const background =
   'https://images.unsplash.com/photo-1499336315816-097655dcfbda'
@@ -55,8 +58,13 @@ const headerData: IHeaderStatsData = {
 }
 
 const Profile: FC = () => {
-  //const { user } = useUser()
   const { userProfile } = useUserProfile()
+
+  //useEffect(() => {
+  //mutate('api/v1/user/profile')
+  //  console.log(userProfile)
+  //}, [isValidating])
+
   return (
     <>
       {userProfile ? (
@@ -64,9 +72,9 @@ const Profile: FC = () => {
           <Cover background={background} />
           <ProfileLayout avatar={avatar}>
             <Header stats={headerData} />
-            <BasicInfo data={basicInfoData} />
+            <BasicInfo data={userProfile.basicInfo} />
             <ProfileDelimeter />
-            <ProfileQuote content={quoteData} />
+            <ProfileQuote content={userProfile.quote?.content || ''} />
             <ResentActivities />
           </ProfileLayout>
         </div>

@@ -12,13 +12,13 @@ import {
   StyledSettingsInput,
 } from '../../styled-profile'
 
-import { useProfileSettingStore } from '@client/providers'
+import { useUserProfileStore } from '@client/providers'
 
 const BasicInfoCareer: FC = () => {
   const { ref, isComponentOutside } = useComponentOutside(true)
   const [forseCollapse, setForseCollapse] = useState(false)
 
-  const { career, setCareer, invalidCareer } = useProfileSettingStore()
+  const { career, setCareer, invalidCareer } = useUserProfileStore()
 
   const setCompany = (e: ChangeEvent<HTMLInputElement>) => {
     e.preventDefault()

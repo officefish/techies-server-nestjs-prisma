@@ -3,10 +3,11 @@ import useSWR from 'swr'
 
 import { UserProfile } from '@client/models/user.model'
 interface ISuccessResponse {
-  status: string
+  status?: string
+  statusCode?: number
 }
 
-const API_PREFIX = 'api/v1/'
+const API_PREFIX = 'api/v1'
 const DIRECTORY = 'user/profile'
 
 export const useUpdateProfile = () => {
@@ -16,7 +17,7 @@ export const useUpdateProfile = () => {
     serverError: updateSettingsError,
   } = useAxios_POST_RawData<ISuccessResponse>({
     api: API_PREFIX,
-    route: `${DIRECTORY}/update`,
+    route: `${DIRECTORY}`,
   })
   return {
     updateSettings,

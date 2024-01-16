@@ -1,5 +1,6 @@
 import { FC, useState, ChangeEvent, useEffect } from 'react'
 import useComponentOutside from '@client/hooks/component-outside'
+import { useUserProfileStore } from '@/client/providers'
 
 import {
   StyledCollapseSection,
@@ -12,23 +13,23 @@ import {
   StyledSettingsInput,
 } from '../../styled-profile'
 
-import { useProfileSettingStore } from '@client/providers'
+//import { useProfileSettingStore } from '@client/providers'
 
 const BasicInfoFullname: FC = () => {
   const { ref, isComponentOutside } = useComponentOutside(true)
   const [forseCollapse, setForseCollapse] = useState(false)
 
-  const { fullName, setFullName, invalidFullName } = useProfileSettingStore()
+  const { fullName, setFullName, invalidFullName } = useUserProfileStore()
 
   const setFirstName = (e: ChangeEvent<HTMLInputElement>) => {
     e.preventDefault()
-    setFullName({ ...fullName, firstName: e.target.value })
+    setFullName({ firstName: e.target.value, lastName: fullName.lastName })
     invalidFullName()
   }
 
-  const setSecondName = (e: ChangeEvent<HTMLInputElement>) => {
+  const setLastName = (e: ChangeEvent<HTMLInputElement>) => {
     e.preventDefault()
-    setFullName({ ...fullName, secondName: e.target.value })
+    setFullName({ firstName: fullName.firstName, lastName: e.target.value })
     invalidFullName()
   }
 
@@ -55,8 +56,8 @@ const BasicInfoFullname: FC = () => {
             <StyledSettingsLabel>Last name:</StyledSettingsLabel>
             <StyledSettingsInput
               type="text"
-              value={fullName?.secondName}
-              onChange={setSecondName}
+              value={fullName?.lastName}
+              onChange={setLastName}
             />
           </StyledSettingsField>
         </StyledSettingsForm>

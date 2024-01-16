@@ -6,7 +6,7 @@ import { DesignSystemProvider } from './design-system-provider'
 
 export {
   ProfileSettingsProvider,
-  useProfileSettingStore,
+  useUserProfileStore,
 } from './profile-settings-provider'
 
 interface ProviderProps {

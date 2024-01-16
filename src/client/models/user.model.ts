@@ -28,7 +28,7 @@ export interface User extends UserMin {
 }
 
 export interface UserProfile {
-  basicInfo: IBasicInfo
-  quote: IQuote
-  domain: IDomain
+  basicInfo?: IBasicInfo
+  quote?: IQuote
+  domain?: IDomain
 }

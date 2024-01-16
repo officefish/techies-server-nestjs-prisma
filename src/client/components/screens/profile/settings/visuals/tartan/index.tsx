@@ -8,7 +8,7 @@ import {
   StyledSettingsLabel,
 } from '../../../styled-profile'
 
-import { useProfileSettingStore } from '@client/providers'
+import { useUserProfileStore } from '@client/providers'
 
 import { ITartanPatternColors } from '@client/models/profile.types'
 import TartanPicker from './tartan-picker'
@@ -16,7 +16,7 @@ import TartanPicker from './tartan-picker'
 const VisualsTartan: FC = () => {
   const [isCollapsed, setIsCollapsed] = useState(false)
 
-  const { tartan, setTartan, invalidTartan } = useProfileSettingStore()
+  const { tartan, setTartan, invalidTartan } = useUserProfileStore()
 
   const setColors = (newColors: ITartanPatternColors) => {
     if (tartan === undefined) return

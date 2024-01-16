@@ -10,12 +10,12 @@ import {
 
 import CoverPicker from './cover.picker'
 
-import { useProfileSettingStore } from '@client/providers'
+import { useUserProfileStore } from '@client/providers'
 
 const VisualsCover: FC = () => {
   //const [imageUrl, setImageUrl] = useState(coverSrc)
 
-  const { cover, setCover, invalidCover } = useProfileSettingStore()
+  const { cover, setCover, invalidCover } = useUserProfileStore()
 
   const setImageUrl = (value: string) => {
     setCover({

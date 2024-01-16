@@ -6,8 +6,7 @@ export interface IHeaderStatsData {
 
 export interface IFullName {
   firstName?: string
-  secondName?: string
-  domainName?: string
+  lastName?: string
 }
 
 export interface ILocation {

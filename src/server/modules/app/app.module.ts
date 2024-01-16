@@ -13,6 +13,9 @@ import { AuthModule } from '@modules/rest/auth/auth.module'
 import { UserModule } from '@modules/rest/user/user.module'
 import { PostModule } from '@modules/rest/post/post.module'
 
+//import { ServeStaticModule } from '@nestjs/serve-static'
+//import { join } from 'path'
+
 //import Next from 'next'
 //import { RenderModule } from 'nest-next'
 
@@ -26,11 +29,12 @@ import { PostModule } from '@modules/rest/post/post.module'
     UserModule,
     AuthModule,
     PostModule,
-    // RenderModule.forRootAsync(
-    //   Next(
-    //     Object.assign({}, { dev: process.env.NODE_ENV !== 'production' }, {}),
-    //   ),
-    // ),
+    //ServeStaticModule.forRoot({
+    // eslint-disable-next-line @typescript-eslint/no-var-requires
+    //rootPath: require('app-root-path').resolve('/public'),
+    //  rootPath: join(__dirname, '..', 'client'),
+    //  renderPath: '/src/public/*',
+    //}),
   ],
   controllers: [AppController],
   providers: [AppService],

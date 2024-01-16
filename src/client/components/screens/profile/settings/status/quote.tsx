@@ -11,17 +11,17 @@ import {
   StyledSettingsLabel,
 } from '../../styled-profile'
 
-import { useProfileSettingStore } from '@client/providers'
+import { useUserProfileStore } from '@client/providers'
 
 const StatusQuote: FC = () => {
   const { ref, isComponentOutside } = useComponentOutside(true)
   const [forseCollapse, setForseCollapse] = useState(false)
 
-  const { quote, setQuote, invalidQuote } = useProfileSettingStore()
+  const { quote, setQuote, invalidQuote } = useUserProfileStore()
 
   const handleAreaChange = (e: ChangeEvent<HTMLTextAreaElement>) => {
     e.preventDefault()
-    setQuote({ value: e.target.value })
+    setQuote({ content: e.target.value })
     invalidQuote()
   }
 
@@ -42,7 +42,7 @@ const StatusQuote: FC = () => {
               className="textarea textarea-bordered min-h-[3.2rem] min-w-[75%] pr-4"
               placeholder="Bio or something exciting"
               onChange={handleAreaChange}
-              value={quote?.value}
+              value={quote?.content}
             ></textarea>
             {/* <StyledSettingsInput type="text" value={quote} onChange={handleInputChange}/> */}
           </StyledSettingsField>

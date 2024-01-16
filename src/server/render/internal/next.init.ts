@@ -4,8 +4,13 @@ import fastifyNextJS from '@fastify/nextjs'
 
 export function initializeNext(app: INestApplication) {
   const server = app.getHttpAdapter().getInstance()
+  const HTTP_PORT = 8001
   server
-    .register(fastifyNextJS, { dev: true, noServeAssets: true })
+    .register(fastifyNextJS, {
+      dev: true,
+      noServeAssets: true,
+      port: HTTP_PORT,
+    })
     .after(() => {
       // get all _next response as usual
       server.next(

@@ -14,13 +14,13 @@ import TimeZonePicker from './timezone.picker'
 import CountryPicker from './country.picker'
 import RegionPicker from './region.picker'
 
-import { useProfileSettingStore } from '@client/providers'
+import { useUserProfileStore } from '@client/providers'
 
 const BasicInfoLocation: FC = () => {
   const { ref, isComponentOutside } = useComponentOutside(true)
   const [forseCollapse, setForseCollapse] = useState(false)
 
-  const { location, setLocation, invalidLocation } = useProfileSettingStore()
+  const { location, setLocation, invalidLocation } = useUserProfileStore()
 
   const setCountry = (value: string) => {
     setLocation({ ...location, country: value })

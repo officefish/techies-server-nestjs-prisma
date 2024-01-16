@@ -49,7 +49,7 @@ export class UserController {
 
     if (!user) {
       return reply
-        .code(400)
+        .code(401)
         .send({ statusCode: 401, message: 'User not found' })
     }
 
@@ -160,6 +160,12 @@ export class UserController {
     }
 
     const basicInfo = await this.service.basicInfo({ userId: id })
+    if (!basicInfo) {
+      return reply
+        .code(201)
+        .send({ basicInfo: null, quote: null, domain: null })
+    }
+
     const basicInfoJson = await this.service.basicInfoJson(basicInfo.id)
     const quote = await this.service.quote({ userId: id })
     const domain = await this.service.domain({ userId: id })
@@ -169,6 +175,6 @@ export class UserController {
       quote: { content: quote.content },
       domain: { value: domain.value },
     }
-    reply.code(201).send({ payload })
+    reply.code(201).send(payload)
   }
 }

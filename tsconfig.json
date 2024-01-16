@@ -28,7 +28,7 @@
         "./src/client/*"
       ],
       "@public/*": [
-        "./src/public/*"
+        "./public/*"
       ]
     },
     "lib": [
