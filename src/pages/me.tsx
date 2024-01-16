@@ -1,10 +1,10 @@
-import Profile from '@client/components/screens/profile'
+import { MyProfile } from '@client/components/screens/profile'
 import { NextPageWithLayout } from '@client/utilities/layout.types'
 import Layout from '@client/components/layout/Layout'
 import Providers from '@client/providers'
 
 const ProfilePage: NextPageWithLayout = () => {
-  return <Profile />
+  return <MyProfile />
 }
 export default ProfilePage
 

@@ -195,7 +195,7 @@ export function useAxios_GET_QueryParams<T = object>({
   }
 
   const [serverError, setServerError] = useState<Error | undefined>(undefined)
-  const [reply, setReply] = useState<T>()
+  const [reply, setReply] = useState<T | null>()
 
   const onSubmit = async (data: string) => {
     const response = await request(data)

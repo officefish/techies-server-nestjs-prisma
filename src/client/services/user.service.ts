@@ -8,8 +8,11 @@ import { SubmitHandler } from 'react-hook-form'
 import { FieldValues } from 'react-hook-form'
 import { User } from '@client/models/user.model'
 //import { useState } from "react"
+const HOST = 'localhost'
+const PORT = 8001
 
 import { Dispatch, SetStateAction } from 'react'
+import axios from 'axios'
 
 const API_PREFIX = 'api/v1/user'
 
@@ -55,4 +58,31 @@ export const useForgotPassword = <T = object>({
   }
 
   return { onSubmit, reply, serverError }
+}
+
+export const getUserProfilebyDomain = async <T = object>({
+  protocol = 'http',
+  host = HOST,
+  port = PORT,
+  api = API_PREFIX,
+  route = 'domain',
+  headers = {
+    'Content-Type': 'application/json',
+  },
+  withCredentials = true,
+  params = {},
+  value = '',
+} = {}): Promise<T | null> => {
+  const url = `${protocol}://${host}:${port}/${api}/${route}/${value}`
+  return await axios
+    .get(url, {
+      headers: { ...headers },
+      withCredentials: withCredentials,
+      params: { ...params },
+    })
+    .then((response) => response.data)
+    .catch(() => {
+      /*console.log(error)*/
+      return null
+    })
 }

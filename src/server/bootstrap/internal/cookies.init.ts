@@ -10,7 +10,7 @@ declare module 'fastify' {
 
 export function initializeCookies(app: INestApplication) {
   const parseOptions = {
-    domain: 'localhost',
+    domain: '.localhost',
     httpOnly: process.env.COOKIE_HTTPONLY,
     path: process.env.COOKIE_PATH,
     secure: process.env.COOKIE_SECURE,

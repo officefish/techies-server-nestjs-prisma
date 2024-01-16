@@ -3,6 +3,7 @@ import {
   initializeSwagger,
   initializeCookies,
   initializeSession,
+  initializeCors,
   initializeStaticAssets,
 } from './bootstrap'
 import { initializeNext, nextRoutes } from './render'
@@ -21,6 +22,7 @@ async function bootstrap() {
   app.setGlobalPrefix('/api/v1')
   // should be initialized before session
   initializeCookies(app)
+  initializeCors(app)
   initializeSwagger(app)
   initializeSession(app)
   initializeStaticAssets(app)

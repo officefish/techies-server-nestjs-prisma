@@ -5,7 +5,7 @@ const nextConfig = {
   reactStrictMode: true,
   compiler: {
     // Enables the styled-components SWC transform
-    //styledComponents: true
+    styledComponents: true
   },
   webpack: function (config, options) {    
     config.resolve = {

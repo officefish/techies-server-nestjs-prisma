@@ -27,7 +27,7 @@ export interface User extends UserMin {
   role: Role
 }
 
-export interface UserProfile {
+export interface IUserProfile {
   basicInfo?: IBasicInfo
   quote?: IQuote
   domain?: IDomain

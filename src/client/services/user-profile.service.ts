@@ -1,7 +1,7 @@
 import { useAxiosFetcher_GET, useAxios_POST_RawData } from './axios.service'
 import useSWR from 'swr'
 
-import { UserProfile } from '@client/models/user.model'
+import { IUserProfile } from '@client/models/user.model'
 interface ISuccessResponse {
   status?: string
   statusCode?: number
@@ -37,7 +37,7 @@ export const useUserProfile = () => {
     error,
     isValidating,
     mutate,
-  } = useSWR<UserProfile>(key, fetcher)
+  } = useSWR<IUserProfile>(key, fetcher)
 
   return { userProfile, error, isValidating, mutate }
 }

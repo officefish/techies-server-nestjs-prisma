@@ -6,6 +6,8 @@ import {
   Req,
   Body,
   UseGuards,
+  //Query,
+  Param,
 } from '@nestjs/common'
 
 import { UpsetProfileDto, GetDomainDto } from './user.schema'
@@ -174,6 +176,31 @@ export class UserController {
       basicInfo: basicInfoJson,
       quote: { content: quote.content },
       domain: { value: domain.value },
+    }
+    reply.code(201).send(payload)
+  }
+
+  @Get('domain/:value')
+  async getUserProfileByDomain(
+    @Req() request: FastifyRequest,
+    @Res() reply: FastifyReply,
+    @Param('value') value: string,
+  ) {
+    const domain = await this.service.domain({ value })
+    if (!domain) {
+      return reply
+        .code(401)
+        .send({ statusCode: 401, message: 'User not found' })
+    }
+
+    const basicInfo = await this.service.basicInfo({ userId: domain.userId })
+    const quote = await this.service.quote({ userId: domain.userId })
+    const basicInfoJson = await this.service.basicInfoJson(basicInfo.id)
+    const payload = {
+      basicInfo: basicInfoJson,
+    }
+    if (quote) {
+      payload['quote'] = { content: quote.content }
     }
     reply.code(201).send(payload)
   }

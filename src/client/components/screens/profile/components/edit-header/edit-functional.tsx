@@ -9,7 +9,7 @@ import { useUserProfileStore } from '@client/providers'
 import { useUpdateProfile } from '@client/services/user-profile.service'
 
 import { StyledFunctional, SettingsButton } from '../../styled-profile'
-import { UserProfile } from '@/client/models/user.model'
+import { IUserProfile } from '@/client/models/user.model'
 import {
   //IBasicInfo,
   ICareer,
@@ -29,7 +29,7 @@ interface UserProfileDataProps {
   domain: IDomain
 }
 
-const prepareUserProfileData = (props: UserProfileDataProps): UserProfile => {
+const prepareUserProfileData = (props: UserProfileDataProps): IUserProfile => {
   const { fullName, education, career, location, quote, domain } = props
   const fullNameData: IFullName = {
     firstName:
