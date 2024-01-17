@@ -1,6 +1,6 @@
 import { Injectable } from '@nestjs/common'
 import { PrismaService } from '@modules/prisma/prisma.service'
-import { User, Prisma, BasicInfo, Quote, Domain } from '@prisma/client'
+import { User, Prisma, BasicInfo, Quote, Domain, Avatar } from '@prisma/client'
 
 interface FullNameInput {
   firstName?: string
@@ -36,6 +36,9 @@ interface QuoteInput {
 
 interface DomainInput {
   value?: string
+}
+interface AvatarInput {
+  url: string
 }
 
 @Injectable()
@@ -346,6 +349,37 @@ export class UserService {
       where: { userId: user.id },
       create: domainCreateInput,
       update: domainUpdateInput,
+    })
+  }
+
+  async upsetAvatar(params: {
+    user: Prisma.UserWhereUniqueInput
+    data: AvatarInput
+  }): Promise<Avatar> {
+    const { user, data } = params
+
+    const url = data.url || ''
+
+    const avatarCreateInput: Prisma.AvatarCreateInput = {
+      user: { connect: { id: user.id } },
+      url,
+    }
+
+    const avatarUpdateInput: Prisma.AvatarUpdateInput = {
+      user: { connect: { id: user.id } },
+      url,
+    }
+
+    return this.prisma.avatar.upsert({
+      where: { userId: user.id },
+      create: avatarCreateInput,
+      update: avatarUpdateInput,
+    })
+  }
+
+  async avatar(input: Prisma.AvatarWhereUniqueInput): Promise<Avatar | null> {
+    return this.prisma.avatar.findUnique({
+      where: input,
     })
   }
 

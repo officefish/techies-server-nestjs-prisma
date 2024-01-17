@@ -10,7 +10,7 @@ import { StyledSettingsTab } from '../styled-profile'
 
 import { useUserProfile } from '@client/services/user-profile.service'
 
-const avatar = '/public/team-2-800x800.jpg'
+//const avatar = '/public/team-2-800x800.jpg'
 import VisualsSettings from './visuals'
 import { useUserProfileStore } from '@/client/providers'
 const background =
@@ -37,7 +37,7 @@ const ProfileSettings: FC = () => {
     setQuote,
     setDomain,
     //setCover,
-    //setAvatar,
+    setAvatar,
     //setTartan
   } = useUserProfileStore()
 
@@ -48,6 +48,7 @@ const ProfileSettings: FC = () => {
     setLocation(userProfile.basicInfo.location)
     setQuote(userProfile.quote)
     setDomain(userProfile.domain)
+    setAvatar(userProfile.avatar)
   }, [userProfile])
 
   const [settingsMode, setSettingsMode] = useState<ESettingsMode>(
@@ -95,7 +96,7 @@ const ProfileSettings: FC = () => {
     <>
       <div className="relative">
         <Cover background={background} />
-        <ProfileLayout avatar={avatar}>
+        <ProfileLayout avatar={userProfile.avatar.imageUrl}>
           <EditHeader />
           <Tabs>
             <TabItem

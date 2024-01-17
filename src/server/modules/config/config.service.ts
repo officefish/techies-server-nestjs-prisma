@@ -28,4 +28,8 @@ export class AppConfigService {
   getSaltLength(): number {
     return this.configService.get('JWT_SALT_LENGTH')
   }
+
+  getAvatarUrl(): string {
+    return this.configService.get('AVATAR_URL')
+  }
 }

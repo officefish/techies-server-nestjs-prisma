@@ -10,10 +10,10 @@ import {
 import AvatarPicker from './avatar.picker'
 
 //import { IVisualsAvatarProps } from '@client/models/settings.model'
-import { useProfileSettingStore } from '@client/providers'
+import { useUserProfileStore } from '@client/providers'
 
 const VisualsAvatar: FC = () => {
-  const { avatar, setAvatar, invalidAvatar } = useProfileSettingStore()
+  const { avatar, setAvatar, invalidAvatar } = useUserProfileStore()
 
   const setImageUrl = (value: string) => {
     setAvatar({

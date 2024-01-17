@@ -81,10 +81,16 @@ const domain = z.object({
   ...value,
 })
 
+const avatar = z.object({
+  imageUrl: z.string().optional(),
+  id: z.string().optional(),
+})
+
 const UpsetProfileSchema = z.object({
   basicInfo: basicInfo.optional(),
   quote: quote.optional(),
   domain: domain.optional(),
+  avatar: avatar.optional(),
 })
 
 export class UpsetProfileDto extends createZodDto(UpsetProfileSchema) {}

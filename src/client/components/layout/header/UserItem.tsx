@@ -23,7 +23,7 @@ const UserItem: FC<UserMin> = ({ name, avatar }) => {
           {avatar && (
             <Image
               alt="avatar"
-              src={avatar.src}
+              src={avatar}
               width={24}
               height={24}
               className="w-6 mask mask-squircle"

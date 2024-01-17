@@ -24,7 +24,7 @@ import {
 
 import { DropdownArrow } from '@/client/components/ui/svg'
 
-import avatar from '@public/team-2-800x800.jpg'
+//import avatar from '@public/team-2-800x800.jpg'
 
 const HeaderNavigation: FC = () => {
   const router = useRouter()
@@ -78,7 +78,7 @@ const HeaderNavigation: FC = () => {
       </StyledDropdown>
 
       {user && user.authenticated ? (
-        <UserItem name={user.name} avatar={avatar} />
+        <UserItem name={user.name} avatar={user.avatar} />
       ) : (
         <StyledButton onClick={signInHandleClick}>Sign In</StyledButton>
       )}

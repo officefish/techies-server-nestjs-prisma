@@ -19,7 +19,7 @@ import {
 
 import { ProfileDelimeter } from './styled-profile'
 
-const avatar = '/public/team-2-800x800.jpg'
+//const avatar = '/public/team-2-800x800.jpg'
 
 const background =
   'https://images.unsplash.com/photo-1499336315816-097655dcfbda'
@@ -38,7 +38,7 @@ const MyProfile: FC = () => {
       {userProfile ? (
         <div className="relative">
           <Cover background={background} />
-          <ProfileLayout avatar={avatar}>
+          <ProfileLayout avatar={userProfile.avatar.imageUrl}>
             <Header stats={headerData} />
             <BasicInfo data={userProfile.basicInfo} />
             <ProfileDelimeter />

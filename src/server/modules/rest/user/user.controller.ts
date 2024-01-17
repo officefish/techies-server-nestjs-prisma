@@ -6,6 +6,7 @@ import {
   Req,
   Body,
   UseGuards,
+  //UploadedFile,
   //Query,
   Param,
 } from '@nestjs/common'
@@ -22,28 +23,28 @@ import {
 import { FastifyRequest, FastifyReply } from 'fastify'
 
 import { UserService } from './user.service'
+import { UploadService } from '../upload/upload.service'
+import { AppConfigService } from '../../config/config.service'
 import { AuthGuard } from '@modules/rest/auth/auth.guard'
-//import { User as UserModel } from '@prisma/client'
 
 @ApiTags('user')
 @Controller('user')
 export class UserController {
-  constructor(private readonly service: UserService) {}
+  constructor(
+    private readonly service: UserService,
+    private readonly imageProccesing: UploadService,
+    private readonly env: AppConfigService,
+  ) {}
 
-  //@Post('user')
-  //async signupUser(
-  //  @Body() userData: { name?: string; email: string },
-  //): Promise<UserModel> {
-  //  return this.service.createUser(userData)
-  //}
   @UseGuards(AuthGuard)
   @Post('profile')
   async upsetProfile(
     @Body() credentials: UpsetProfileDto,
     @Req() request: FastifyRequest,
     @Res() reply: FastifyReply,
+    //@UploadedFile() avatar: File,
   ) {
-    const { basicInfo, quote, domain } = credentials
+    const { basicInfo, quote, domain, avatar } = credentials
 
     // because of AuthGuard we have userId in FastifyRequest
     const id = request['userId']
@@ -53,6 +54,17 @@ export class UserController {
       return reply
         .code(401)
         .send({ statusCode: 401, message: 'User not found' })
+    }
+
+    // Upload avatar and disk storage final file as webp
+    if (avatar && avatar.imageUrl) {
+      const buffer = await this.imageProccesing.bufferFromURI(avatar.imageUrl)
+      const url = await this.imageProccesing.convertToWebp(buffer)
+
+      await this.service.upsetAvatar({
+        user: { id: user.id },
+        data: { url },
+      })
     }
 
     /* Update basicInfo */
@@ -125,6 +137,12 @@ export class UserController {
         .send({ statusCode: 401, message: 'User not found' })
     }
 
+    let avatarUrl = this.env.getAvatarUrl()
+    const avatar = await this.service.avatar({ userId: id })
+    if (avatar) {
+      avatarUrl = avatar.url
+    }
+
     const payload = {
       id: user?.id,
       email: user?.email,
@@ -132,6 +150,7 @@ export class UserController {
       verified: user?.verified,
       authenticated: true,
       role: user?.role,
+      avatar: avatarUrl,
     }
     reply.code(201).send(payload)
   }
@@ -171,11 +190,17 @@ export class UserController {
     const basicInfoJson = await this.service.basicInfoJson(basicInfo.id)
     const quote = await this.service.quote({ userId: id })
     const domain = await this.service.domain({ userId: id })
+    let avatarData = { imageUrl: this.env.getAvatarUrl(), id: null }
+    const avatar = await this.service.avatar({ userId: id })
+    if (avatar) {
+      avatarData = { imageUrl: avatar.url, id: avatar.id }
+    }
 
     const payload = {
       basicInfo: basicInfoJson,
       quote: { content: quote.content },
       domain: { value: domain.value },
+      avatar: avatarData,
     }
     reply.code(201).send(payload)
   }

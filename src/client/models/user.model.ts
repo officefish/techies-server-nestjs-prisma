@@ -1,5 +1,4 @@
-import { StaticImageData } from 'next/image'
-import { IBasicInfo, IQuote, IDomain } from './profile.types'
+import { IBasicInfo, IQuote, IDomain, IAvatar } from './profile.types'
 /**
  * Model User
  *
@@ -16,7 +15,7 @@ export type Role = (typeof Role)[keyof typeof Role]
 
 export interface UserMin {
   name?: string | null
-  avatar?: StaticImageData
+  avatar?: string
 }
 
 export interface User extends UserMin {
@@ -31,4 +30,5 @@ export interface IUserProfile {
   basicInfo?: IBasicInfo
   quote?: IQuote
   domain?: IDomain
+  avatar?: IAvatar
 }

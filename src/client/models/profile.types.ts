@@ -41,9 +41,9 @@ export interface IDomain {
 }
 
 export interface IAvatar {
-  id: string
+  id?: string
   imageUrl: string
-  croppedImageUrl: string | null
+  croppedImageUrl?: string | null
 }
 
 export interface ICover {

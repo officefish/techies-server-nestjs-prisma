@@ -11,6 +11,7 @@ import { useUpdateProfile } from '@client/services/user-profile.service'
 import { StyledFunctional, SettingsButton } from '../../styled-profile'
 import { IUserProfile } from '@/client/models/user.model'
 import {
+  IAvatar,
   //IBasicInfo,
   ICareer,
   IDomain,
@@ -27,10 +28,13 @@ interface UserProfileDataProps {
   location: ILocation
   quote: IQuote
   domain: IDomain
+  avatar: IAvatar
 }
 
-const prepareUserProfileData = (props: UserProfileDataProps): IUserProfile => {
-  const { fullName, education, career, location, quote, domain } = props
+const prepareUserProfileData = async (
+  props: UserProfileDataProps,
+): Promise<IUserProfile> => {
+  const { fullName, education, career, location, quote, domain, avatar } = props
   const fullNameData: IFullName = {
     firstName:
       fullName.firstName && fullName.firstName.length
@@ -72,6 +76,10 @@ const prepareUserProfileData = (props: UserProfileDataProps): IUserProfile => {
         : undefined,
   }
 
+  const avatarUrl = avatar.croppedImageUrl
+    ? avatar.croppedImageUrl
+    : avatar.imageUrl
+
   return {
     basicInfo: {
       fullName: fullNameData,
@@ -81,6 +89,7 @@ const prepareUserProfileData = (props: UserProfileDataProps): IUserProfile => {
     },
     quote,
     domain,
+    avatar: { imageUrl: avatarUrl },
   }
 }
 
@@ -110,7 +119,7 @@ const EditHeaderFunctional: FC = () => {
     education,
     quote,
     domain,
-    //avatar,
+    avatar,
     //cover,
     //tartan,
   } = useUserProfileStore()
@@ -127,15 +136,17 @@ const EditHeaderFunctional: FC = () => {
 
     if (!invalidData) return
 
-    const data = prepareUserProfileData({
+    prepareUserProfileData({
       fullName,
       location,
       career,
       education,
       quote,
       domain,
+      avatar,
+    }).then((data) => {
+      updateUserProfile(data)
     })
-    updateUserProfile(data)
   }
 
   useEffect(() => {

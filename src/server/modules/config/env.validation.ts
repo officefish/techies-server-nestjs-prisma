@@ -17,6 +17,9 @@ enum Environment {
 
 class EnvironmentVariables {
   @IsString()
+  AVATAR_URL: string
+
+  @IsString()
   API_VERSION: string
 
   @IsString()
