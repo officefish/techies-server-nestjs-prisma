@@ -12,6 +12,7 @@ import { AccessoryModule } from '@modules/accessory/accessory.module'
 import { AuthModule } from '@modules/rest/auth/auth.module'
 import { UserModule } from '@modules/rest/user/user.module'
 import { PostModule } from '@modules/rest/post/post.module'
+import { UploadModule } from '../rest/upload/upload.module'
 
 //import { ServeStaticModule } from '@nestjs/serve-static'
 //import { join } from 'path'
@@ -29,6 +30,7 @@ import { PostModule } from '@modules/rest/post/post.module'
     UserModule,
     AuthModule,
     PostModule,
+    UploadModule,
     //ServeStaticModule.forRoot({
     // eslint-disable-next-line @typescript-eslint/no-var-requires
     //rootPath: require('app-root-path').resolve('/public'),
