@@ -300,7 +300,12 @@ ${(p) =>
     ? 'hover:bg-base-100 hover:dark:bg-base-100-dark'
     : 'hover:bg-base-200 hover:dark:bg-base-200-dark'}
 `
-
+interface IOpenable {
+  $open?: boolean
+}
+export const StyledProfileLining = tw.div<IOpenable>`
+${(p) => (p.$open ? 'h-24' : '')}
+`
 /*
 ${(p) => p.$forceCollapse 
     ? "bg-base-300 dark:bg-base-300-dark" 

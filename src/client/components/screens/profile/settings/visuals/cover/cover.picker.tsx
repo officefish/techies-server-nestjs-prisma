@@ -15,10 +15,10 @@ const warning =
   'Cower should be not less than 1024/400 and not more than 2048/800 px axis'
 
 const MIN_WIDTH = 1024
-const MAX_WIDTH = 2048
+const MAX_WIDTH = 4096
 
 const MIN_HEIGHT = 400
-const MAX_HEIGHT = 1024
+const MAX_HEIGHT = 2048
 
 export const CoverPicker: FC<ICoverPicker> = ({ imageUrl, setImageUrl }) => {
   const [error, setError] = useState<string | undefined>(undefined)

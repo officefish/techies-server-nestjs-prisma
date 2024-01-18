@@ -23,8 +23,8 @@ import { IUserProfile } from '@/client/models/user.model'
 
 //const avatar = '/public/team-2-800x800.jpg'
 
-const background =
-  'https://images.unsplash.com/photo-1499336315816-097655dcfbda'
+//const background =
+//  'https://images.unsplash.com/photo-1499336315816-097655dcfbda'
 
 const headerData: IHeaderStatsData = {
   followers: 22,
@@ -41,8 +41,9 @@ const UserProfile: FC<IUserProfileProps> = ({ data }) => {
 
   return (
     <div className="relative">
-      <Cover background={background} />
-      <ProfileLayout avatar={data.avatar.imageUrl}>
+      <Cover background={data.cover?.imageUrl} />
+      {/* <Cover background={background} /> */}
+      <ProfileLayout avatar={data.avatar?.imageUrl}>
         <Header stats={headerData} />
         <BasicInfo data={data.basicInfo} />
         <ProfileDelimeter />

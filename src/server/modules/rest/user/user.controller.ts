@@ -44,7 +44,9 @@ export class UserController {
     @Res() reply: FastifyReply,
     //@UploadedFile() avatar: File,
   ) {
-    const { basicInfo, quote, domain, avatar } = credentials
+    const { basicInfo, quote, domain, avatar, cover } = credentials
+
+    //console.log(credentials)
 
     // because of AuthGuard we have userId in FastifyRequest
     const id = request['userId']
@@ -59,12 +61,28 @@ export class UserController {
     // Upload avatar and disk storage final file as webp
     if (avatar && avatar.imageUrl) {
       const buffer = await this.imageProccesing.bufferFromURI(avatar.imageUrl)
-      const url = await this.imageProccesing.convertToWebp(buffer)
+      const url = await this.imageProccesing.convertToWebpAndResize(buffer)
 
       await this.service.upsetAvatar({
         user: { id: user.id },
         data: { url },
       })
+    }
+
+    //console.log(cover)
+
+    if (cover && cover.imageUrl) {
+      console.log(cover.imageUrl)
+      const buffer = await this.imageProccesing.bufferFromURI(cover.imageUrl)
+      console.log(buffer)
+      const url = await this.imageProccesing.convertToWebp(buffer)
+      console.log(url)
+
+      const coverSuccess = await this.service.upsetCover({
+        user: { id: user.id },
+        data: { url },
+      })
+      console.log(coverSuccess)
     }
 
     /* Update basicInfo */
@@ -196,11 +214,18 @@ export class UserController {
       avatarData = { imageUrl: avatar.url, id: avatar.id }
     }
 
+    let coverData = { imageUrl: this.env.getCoverUrl(), id: null }
+    const cover = await this.service.cover({ userId: id })
+    if (cover) {
+      coverData = { imageUrl: cover.url, id: cover.id }
+    }
+
     const payload = {
       basicInfo: basicInfoJson,
       quote: { content: quote.content },
       domain: { value: domain.value },
       avatar: avatarData,
+      cover: coverData,
     }
     reply.code(201).send(payload)
   }

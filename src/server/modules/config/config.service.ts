@@ -32,4 +32,8 @@ export class AppConfigService {
   getAvatarUrl(): string {
     return this.configService.get('AVATAR_URL')
   }
+
+  getCoverUrl(): string {
+    return this.configService.get('COVER_URL')
+  }
 }

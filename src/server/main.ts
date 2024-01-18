@@ -20,6 +20,9 @@ async function bootstrap() {
   )
   // Set global prefix for api
   app.setGlobalPrefix('/api/v1')
+
+  //const bodyLimit = 10_485_760 // 10MiB
+  //app.useBodyParser('application/json', { bodyLimit })
   // should be initialized before session
   initializeCookies(app)
   initializeCors(app)

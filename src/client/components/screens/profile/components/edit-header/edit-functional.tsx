@@ -19,6 +19,7 @@ import {
   IFullName,
   ILocation,
   IQuote,
+  ICover,
 } from '@/client/models/profile.types'
 
 interface UserProfileDataProps {
@@ -29,12 +30,22 @@ interface UserProfileDataProps {
   quote: IQuote
   domain: IDomain
   avatar: IAvatar
+  cover: ICover
 }
 
 const prepareUserProfileData = async (
   props: UserProfileDataProps,
 ): Promise<IUserProfile> => {
-  const { fullName, education, career, location, quote, domain, avatar } = props
+  const {
+    fullName,
+    education,
+    career,
+    location,
+    quote,
+    domain,
+    avatar,
+    cover,
+  } = props
   const fullNameData: IFullName = {
     firstName:
       fullName.firstName && fullName.firstName.length
@@ -75,12 +86,8 @@ const prepareUserProfileData = async (
         ? education.faculty
         : undefined,
   }
-
-  const avatarUrl = avatar.croppedImageUrl
-    ? avatar.croppedImageUrl
-    : avatar.imageUrl
-
-  return {
+  /* BasicInfo, Quote, Domain data preparation */
+  const response = {
     basicInfo: {
       fullName: fullNameData,
       location: locationData,
@@ -89,8 +96,16 @@ const prepareUserProfileData = async (
     },
     quote,
     domain,
-    avatar: { imageUrl: avatarUrl },
   }
+  /* Avatar */
+  if (avatar.croppedImageUrl) {
+    response['avatar'] = { imageUrl: avatar.croppedImageUrl }
+  }
+  /* Cover */
+  console.log(cover.imageUrl)
+  response['cover'] = { imageUrl: cover.imageUrl }
+
+  return response
 }
 
 const EditHeaderFunctional: FC = () => {
@@ -120,7 +135,7 @@ const EditHeaderFunctional: FC = () => {
     quote,
     domain,
     avatar,
-    //cover,
+    cover,
     //tartan,
   } = useUserProfileStore()
 
@@ -144,6 +159,7 @@ const EditHeaderFunctional: FC = () => {
       quote,
       domain,
       avatar,
+      cover,
     }).then((data) => {
       updateUserProfile(data)
     })

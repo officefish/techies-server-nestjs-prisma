@@ -1,6 +1,14 @@
 import { Injectable } from '@nestjs/common'
 import { PrismaService } from '@modules/prisma/prisma.service'
-import { User, Prisma, BasicInfo, Quote, Domain, Avatar } from '@prisma/client'
+import {
+  User,
+  Prisma,
+  BasicInfo,
+  Quote,
+  Domain,
+  Avatar,
+  Cover,
+} from '@prisma/client'
 
 interface FullNameInput {
   firstName?: string
@@ -38,6 +46,10 @@ interface DomainInput {
   value?: string
 }
 interface AvatarInput {
+  url: string
+}
+
+interface CoverInput {
   url: string
 }
 
@@ -379,6 +391,37 @@ export class UserService {
 
   async avatar(input: Prisma.AvatarWhereUniqueInput): Promise<Avatar | null> {
     return this.prisma.avatar.findUnique({
+      where: input,
+    })
+  }
+
+  async upsetCover(params: {
+    user: Prisma.UserWhereUniqueInput
+    data: CoverInput
+  }): Promise<Cover> {
+    const { user, data } = params
+
+    const url = data.url || ''
+
+    const createInput: Prisma.CoverCreateInput = {
+      user: { connect: { id: user.id } },
+      url,
+    }
+
+    const updateInput: Prisma.CoverUpdateInput = {
+      user: { connect: { id: user.id } },
+      url,
+    }
+
+    return this.prisma.cover.upsert({
+      where: { userId: user.id },
+      create: createInput,
+      update: updateInput,
+    })
+  }
+
+  async cover(input: Prisma.CoverWhereUniqueInput): Promise<Cover | null> {
+    return this.prisma.cover.findUnique({
       where: input,
     })
   }

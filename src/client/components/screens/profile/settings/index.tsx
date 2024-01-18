@@ -13,8 +13,8 @@ import { useUserProfile } from '@client/services/user-profile.service'
 //const avatar = '/public/team-2-800x800.jpg'
 import VisualsSettings from './visuals'
 import { useUserProfileStore } from '@/client/providers'
-const background =
-  'https://images.unsplash.com/photo-1499336315816-097655dcfbda'
+//const background =
+//  'https://images.unsplash.com/photo-1499336315816-097655dcfbda'
 
 enum ESettingsMode {
   BasicInfo,
@@ -36,19 +36,21 @@ const ProfileSettings: FC = () => {
     setLocation,
     setQuote,
     setDomain,
-    //setCover,
+    setCover,
     setAvatar,
     //setTartan
   } = useUserProfileStore()
 
   useEffect(() => {
-    setFullName(userProfile.basicInfo.fullName)
-    setCareer(userProfile.basicInfo.career)
-    setEducation(userProfile.basicInfo.education)
-    setLocation(userProfile.basicInfo.location)
-    setQuote(userProfile.quote)
-    setDomain(userProfile.domain)
-    setAvatar(userProfile.avatar)
+    if (!userProfile) return
+    setFullName(userProfile.basicInfo?.fullName)
+    setCareer(userProfile.basicInfo?.career)
+    setEducation(userProfile.basicInfo?.education)
+    setLocation(userProfile.basicInfo?.location)
+    setQuote(userProfile?.quote)
+    setDomain(userProfile?.domain)
+    setAvatar(userProfile?.avatar)
+    setCover(userProfile?.cover)
   }, [userProfile])
 
   const [settingsMode, setSettingsMode] = useState<ESettingsMode>(
@@ -95,8 +97,8 @@ const ProfileSettings: FC = () => {
   return (
     <>
       <div className="relative">
-        <Cover background={background} />
-        <ProfileLayout avatar={userProfile.avatar.imageUrl}>
+        <Cover background={userProfile?.cover?.imageUrl} />
+        <ProfileLayout avatar={userProfile?.avatar?.imageUrl}>
           <EditHeader />
           <Tabs>
             <TabItem

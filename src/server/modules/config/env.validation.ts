@@ -17,9 +17,6 @@ enum Environment {
 
 class EnvironmentVariables {
   @IsString()
-  AVATAR_URL: string
-
-  @IsString()
   API_VERSION: string
 
   @IsString()
@@ -93,6 +90,12 @@ class EnvironmentVariables {
 
   @IsNumber()
   SESSION_MAX_AGE: number
+
+  @IsString()
+  AVATAR_URL: string
+
+  @IsString()
+  COVER_URL: string
 }
 
 export function validate(config: Record<string, unknown>) {
