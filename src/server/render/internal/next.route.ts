@@ -1,5 +1,6 @@
-//import { FastifyInstance } from 'fastify'
+import { FastifyInstance } from 'fastify'
 import { INestApplication, Logger } from '@nestjs/common'
+//import FastifyInstance from ''
 
 //import { FastifyRequest } from 'fastify'
 //import { FastifyReply } from 'fastify'
@@ -14,22 +15,19 @@ import { INestApplication, Logger } from '@nestjs/common'
 // }
 
 export async function nextRoutes(app: INestApplication) {
-  const server = app.getHttpAdapter().getInstance()
+  const server = app.getHttpAdapter().getInstance() as FastifyInstance
+  //console.log(server)
   await server.after()
+
   server.next('/')
   server.next('/me')
   server.next('/me/settings')
 
-  //server.next(`/auth/log-in`, async (app:NextServer, req:FastifyRequest, reply:FastifyReply) => {
-  // here we potentialy can forward fastify instance to req.raw
-  //req.raw.server = req.server
-  //await app.render(req.raw, reply.raw, '/log-in', {})
-  //reply.hijack()
-  //})
   server.next(`/auth/sign-in`)
   server.next(`/auth/sign-up`)
   server.next('/auth/forgot-password')
   server.next('/auth/password-reset/*')
+
   Logger.log('NEST endpoints register', 'Render')
 }
 

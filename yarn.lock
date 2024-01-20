@@ -776,7 +776,7 @@
     glob "^8.0.1"
     p-limit "^3.1.0"
 
-"@fastify/under-pressure@^8.0.0":
+"@fastify/under-pressure@^8.0.0", "@fastify/under-pressure@^8.3.0":
   version "8.3.0"
   resolved "https://registry.yarnpkg.com/@fastify/under-pressure/-/under-pressure-8.3.0.tgz#9ef952c09a605e117489813a92b00d1352ca7738"
   integrity sha512-ap1EePB9vHm8uQLM0nnaOeIMBLooNmAMTnccavBRwaXmu+acJFuSEQRVdMGRkW6viFDhdo5RGTcHzMBQyrucEA==

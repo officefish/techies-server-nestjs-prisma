@@ -1,13 +1,26 @@
 import { INestApplication, Logger } from '@nestjs/common'
 
 import fastifyNextJS from '@fastify/nextjs'
+//import { ConfigService } from '@nestjs/config'
+
+//import NextServer from 'next'
+
+//import { NextPlugin } from './next.fastify.plugin'
 
 export function initializeNext(app: INestApplication) {
+  //const server = app.getHttpAdapter().getInstance()
+  //server.register(NextPlugin, { client })
+
+  //const configService = app.get<ConfigService<IConfigTypes>>(ConfigService)
+  //const appConfig = configService.get<IAppConfig>('app')
+
   const server = app.getHttpAdapter().getInstance()
-  const HTTP_PORT = 8001
+  const HTTP_PORT = process.env.ROOT_PORT
+  const DEV = process.env.NODE_ENV === 'development'
+
   server
     .register(fastifyNextJS, {
-      dev: true,
+      dev: DEV,
       noServeAssets: true,
       port: HTTP_PORT,
     })

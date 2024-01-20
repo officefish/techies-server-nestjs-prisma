@@ -31,6 +31,7 @@ import { UploadModule } from '../rest/upload/upload.module'
     AuthModule,
     PostModule,
     UploadModule,
+    //RenderModule.forRootAsync(Next({})),
     //ServeStaticModule.forRoot({
     // eslint-disable-next-line @typescript-eslint/no-var-requires
     //rootPath: require('app-root-path').resolve('/public'),

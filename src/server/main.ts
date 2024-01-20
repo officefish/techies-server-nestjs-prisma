@@ -12,8 +12,23 @@ import {
   FastifyAdapter,
   NestFastifyApplication,
 } from '@nestjs/platform-fastify'
+//import Next, { NextConfig } from 'next'
 
 async function bootstrap() {
+  // Next Client need to be initialised before Fastify
+  // const nextOptions = {
+  //   noServeAssets: true,
+  //   port: process.env.ROOT_PORT,
+  // } as NextConfig
+  // const client = Next(
+  //   Object.assign(
+  //     {},
+  //     { dev: process.env.NODE_ENV === 'development' },
+  //     nextOptions,
+  //   ),
+  // )
+
+  // Now initialize Fastify
   const app = await NestFactory.create<NestFastifyApplication>(
     AppModule,
     new FastifyAdapter(),

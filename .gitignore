@@ -1,6 +1,7 @@
 # compiled output
 /dist
 /public
+/ssh
 /node_modules
 
 # Logs
