@@ -8,6 +8,8 @@ import { useUserProfileStore } from '@client/providers'
 
 import { useUpdateProfile } from '@client/services/user-profile.service'
 
+//import * as bcrypt from 'bcryptjs'
+
 import { StyledFunctional, SettingsButton } from '../../styled-profile'
 import { IUserProfile } from '@/client/models/user.model'
 import {
@@ -20,6 +22,7 @@ import {
   ILocation,
   IQuote,
   ICover,
+  ITartan,
 } from '@/client/models/profile.types'
 
 interface UserProfileDataProps {
@@ -31,6 +34,7 @@ interface UserProfileDataProps {
   domain: IDomain
   avatar: IAvatar
   cover: ICover
+  tartan: ITartan
 }
 
 const prepareUserProfileData = async (
@@ -45,6 +49,7 @@ const prepareUserProfileData = async (
     domain,
     avatar,
     cover,
+    tartan,
   } = props
   const fullNameData: IFullName = {
     firstName:
@@ -102,9 +107,21 @@ const prepareUserProfileData = async (
     response['avatar'] = { imageUrl: avatar.croppedImageUrl }
   }
   /* Cover */
-  console.log(cover.imageUrl)
   response['cover'] = { imageUrl: cover.imageUrl }
 
+  /* Tartan */
+  if (tartan.colors) {
+    const pattern = JSON.stringify(tartan.colors)
+    //const hashed = await bcrypt.hash(pattern, await bcrypt.genSalt(6))
+    response['tartan'] = {
+      pattern,
+      //hashed,
+      //pngSrc: tartan.pngSrc,
+      //svgSrc: tartan.svgSrc,
+    }
+    /* save pattern to pattern context */
+  }
+  console.log(response['tartan'])
   return response
 }
 
@@ -136,7 +153,7 @@ const EditHeaderFunctional: FC = () => {
     domain,
     avatar,
     cover,
-    //tartan,
+    tartan,
   } = useUserProfileStore()
 
   const router = useRouter()
@@ -160,6 +177,7 @@ const EditHeaderFunctional: FC = () => {
       domain,
       avatar,
       cover,
+      tartan,
     }).then((data) => {
       updateUserProfile(data)
     })
@@ -178,6 +196,7 @@ const EditHeaderFunctional: FC = () => {
       !isValidTartan
     )
       setInvalidData(true)
+    console.log(isValidTartan)
   }, [
     isValidFullName,
     isValidCareer,
@@ -188,6 +207,7 @@ const EditHeaderFunctional: FC = () => {
     isValidTartan,
     isValidAvatar,
     isValidCover,
+    invalidData,
   ])
 
   useEffect(() => {

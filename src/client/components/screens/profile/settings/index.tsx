@@ -38,7 +38,7 @@ const ProfileSettings: FC = () => {
     setDomain,
     setCover,
     setAvatar,
-    //setTartan
+    //setTartan,
   } = useUserProfileStore()
 
   useEffect(() => {
@@ -51,6 +51,7 @@ const ProfileSettings: FC = () => {
     setDomain(userProfile?.domain)
     setAvatar(userProfile?.avatar)
     setCover(userProfile?.cover)
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [userProfile])
 
   const [settingsMode, setSettingsMode] = useState<ESettingsMode>(

@@ -12,6 +12,9 @@ import {
 } from '@nestjs/common'
 
 import { UpsetProfileDto, GetDomainDto } from './user.schema'
+//import { getTartanAsRender } from '../../../../shared/services/tartan/svg-data.builder'
+//'@/shared/services/tartan/svg-data.builder'
+//import { generateRandomPattern } from '@shared/services/tartan/random-pattern'
 
 import {
   //ApiCreatedResponse,
@@ -26,14 +29,20 @@ import { UserService } from './user.service'
 import { UploadService } from '../upload/upload.service'
 import { AppConfigService } from '../../config/config.service'
 import { AuthGuard } from '@modules/rest/auth/auth.guard'
+import { CryptoService } from '../../crypto/crypto.service'
+import { TartanService } from '../../tartan/tartan.service'
 
 @ApiTags('user')
 @Controller('user')
 export class UserController {
+  //private getTartanAsRender = getTartanAsRender
+  //private generateRandomPattern
   constructor(
     private readonly service: UserService,
     private readonly imageProccesing: UploadService,
     private readonly env: AppConfigService,
+    private readonly crypto: CryptoService,
+    private readonly tartanProcessing: TartanService,
   ) {}
 
   @UseGuards(AuthGuard)
@@ -44,9 +53,10 @@ export class UserController {
     @Res() reply: FastifyReply,
     //@UploadedFile() avatar: File,
   ) {
-    const { basicInfo, quote, domain, avatar, cover } = credentials
+    const { basicInfo, quote, domain, avatar, cover, tartan } = credentials
 
-    //console.log(credentials)
+    console.log('POST:: PROFILE')
+    console.log(credentials)
 
     // because of AuthGuard we have userId in FastifyRequest
     const id = request['userId']
@@ -70,19 +80,33 @@ export class UserController {
     }
 
     //console.log(cover)
-
     if (cover && cover.imageUrl) {
-      console.log(cover.imageUrl)
-      const buffer = await this.imageProccesing.bufferFromURI(cover.imageUrl)
-      console.log(buffer)
-      const url = await this.imageProccesing.convertToWebp(buffer)
-      console.log(url)
+      const coverPath = cover.imageUrl.split('/')
+      /* if imageUrl is URI data of new image, then update */
+      if (coverPath[1] !== 'public') {
+        const buffer = await this.imageProccesing.bufferFromURI(cover.imageUrl)
+        const url = await this.imageProccesing.convertToWebp(buffer)
+        await this.service.upsetCover({
+          user: { id: user.id },
+          data: { url },
+        })
+      }
+    }
 
-      const coverSuccess = await this.service.upsetCover({
+    if (tartan && tartan.pattern) {
+      const salt = await this.crypto.generateSalt(this.env.getSaltLength())
+      const hashed = await this.crypto.hash(tartan.pattern, salt)
+      const colors = JSON.parse(tartan.pattern)
+      const buffer = this.tartanProcessing.getRenderAsBuffer(colors)
+      //const newSvgData = await getTartanAsRender(colors)
+      //const uri = `data:image/svg+xml;base64,${btoa(newSvgData)}`
+      //console.log(uri)
+      // const buffer = await this.imageProccesing.bufferFromURI(uri)
+      const pngUrl = await this.imageProccesing.convertToPng(buffer)
+      await this.service.upsetTartan({
         user: { id: user.id },
-        data: { url },
+        data: { pattern: tartan.pattern, hashed, pngUrl },
       })
-      console.log(coverSuccess)
     }
 
     /* Update basicInfo */

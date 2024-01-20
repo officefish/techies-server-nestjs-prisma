@@ -9,9 +9,11 @@ import { UploadModule } from '../upload/upload.module'
 import { UploadService } from '../upload/upload.service'
 import { SharpModule, SharpService } from 'nestjs-sharp'
 import { AppConfigService } from '../../config/config.service'
+import { TartanModule } from '../../tartan/tartan.module'
+import { TartanService } from '../../tartan/tartan.service'
 
 @Module({
-  imports: [AccessoryModule, UploadModule, SharpModule],
+  imports: [AccessoryModule, UploadModule, SharpModule, TartanModule],
   controllers: [UserController],
   providers: [
     UserService,
@@ -21,6 +23,7 @@ import { AppConfigService } from '../../config/config.service'
     UploadService,
     SharpService,
     AppConfigService,
+    TartanService,
   ],
 })
 export class UserModule {}

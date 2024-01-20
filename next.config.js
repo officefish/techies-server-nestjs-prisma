@@ -15,6 +15,7 @@ const nextConfig = {
         '@': path.resolve(__dirname, './src/'),
         '@modules': path.resolve(__dirname, './src/server/modules/'),
         '@client': path.resolve(__dirname, './src/client/'),
+        '@shared': path.resolve(__dirname, './src/shared/'),
         '@public': path.resolve(__dirname, './src/public/'),
         //'@assets': path.resolve(__dirname, './src/assets/'),
         //'@components': path.resolve(__dirname, './src/components/'),

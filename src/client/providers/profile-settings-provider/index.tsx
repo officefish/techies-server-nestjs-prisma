@@ -124,7 +124,7 @@ const createProfileSettingsStore = () =>
     setTartan: (newTartan: ITartan) =>
       set(() => ({ tartan: { ...newTartan } })),
     isValidTartan: true,
-    invalidTartan: () => ({ isValidTartan: false }),
+    invalidTartan: () => set(() => ({ isValidTartan: false })),
   }))
 
 type UserProfileStore = ReturnType<typeof createProfileSettingsStore>

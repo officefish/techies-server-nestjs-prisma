@@ -29,7 +29,7 @@
       ],
       "@public/*": [
         "./public/*"
-      ]
+      ],
     },
     "lib": [
       "dom",
@@ -53,6 +53,8 @@
     "./src/client/**/*.tsx",
     "./src/tailwind/**/*.ts",
     "./src/server/**/*.ts",
+    "./src/shared/**/*.ts",
+    "./src/shared/**/*.tsx",
     "./vitest/**/*.ts",
     "./@types/**/*.d.ts",
   ],

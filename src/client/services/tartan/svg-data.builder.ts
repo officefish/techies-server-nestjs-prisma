@@ -57,7 +57,7 @@ const isValidSeam = (seam, minWidth, minHeight, maxWidth, maxHeight) => {
 }
 
 function hexToRgb(hex) {
-  var result = /^#?([a-f\d]{2})([a-f\d]{2})([a-f\d]{2})$/i.exec(hex)
+  const result = /^#?([a-f\d]{2})([a-f\d]{2})([a-f\d]{2})$/i.exec(hex)
   return result
     ? {
         r: parseInt(result[1], 16),
@@ -83,7 +83,7 @@ function parseColor(color) {
 }
 
 const toTone = (color, tone) => {
-  let rgb = parseColor(color)
+  const rgb = parseColor(color)
   if (!rgb) return color
   rgb['r'] = Math.round(rgb['r'] * tone)
   rgb['g'] = Math.round(rgb['g'] * tone)

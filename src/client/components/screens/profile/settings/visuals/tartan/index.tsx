@@ -26,20 +26,19 @@ const VisualsTartan: FC = () => {
       pngSrc: null,
       colors: [...newColors],
     })
-
     invalidTartan()
   }
 
   const setSvgSrc = (svgSrc: string | null) => {
     if (tartan === undefined) return
     setTartan({ ...tartan, svgSrc })
-    invalidTartan()
+    //invalidTartan()
   }
 
   const setPngSrc = (pngSrc: string | null) => {
     if (tartan === undefined) return
     setTartan({ ...tartan, pngSrc })
-    invalidTartan()
+    //invalidTartan()
   }
 
   const handleCollabse = (newIsCollapsed: boolean) => {

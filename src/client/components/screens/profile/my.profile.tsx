@@ -1,7 +1,5 @@
 import { FC } from 'react'
-//import { useUser } from '@client/services/user.service'
 import { useUserProfile } from '@client/services/user-profile.service'
-//import { StaticImageData } from "next/image"
 
 import {
   Cover,
@@ -12,14 +10,9 @@ import {
   ResentActivities,
 } from './components'
 
-import {
-  //IBasicInfo,
-  IHeaderStatsData,
-} from '@client/models/profile.types'
+import { IHeaderStatsData } from '@client/models/profile.types'
 
 import { ProfileDelimeter } from './styled-profile'
-
-//const avatar = '/public/team-2-800x800.jpg'
 
 //const background =
 //  'https://images.unsplash.com/photo-1499336315816-097655dcfbda'
@@ -38,7 +31,6 @@ const MyProfile: FC = () => {
       {userProfile ? (
         <div className="relative">
           <Cover background={userProfile.cover?.imageUrl} />
-          {/* <Cover background={background} /> */}
           <ProfileLayout avatar={userProfile.avatar?.imageUrl}>
             <Header stats={headerData} />
             <BasicInfo data={userProfile.basicInfo} />

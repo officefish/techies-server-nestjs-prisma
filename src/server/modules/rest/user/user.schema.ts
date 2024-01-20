@@ -91,12 +91,20 @@ const cover = z.object({
   id: z.string().optional(),
 })
 
+const tartan = z.object({
+  pattern: z.string(),
+  hashed: z.string().optional(),
+  pngSrc: z.string().optional(),
+  svgSrc: z.string().optional(),
+})
+
 const UpsetProfileSchema = z.object({
   basicInfo: basicInfo.optional(),
   quote: quote.optional(),
   domain: domain.optional(),
   avatar: avatar.optional(),
   cover: cover.optional(),
+  tartan: tartan.optional(),
 })
 
 export class UpsetProfileDto extends createZodDto(UpsetProfileSchema) {}

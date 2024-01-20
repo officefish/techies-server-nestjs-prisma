@@ -60,7 +60,9 @@ export interface ITartanPatternColors extends Array<IColorItem> {}
 
 export interface ITartan {
   id?: string
-  colors: ITartanPatternColors | undefined | null
-  svgSrc: string | null
-  pngSrc: string | null
+  pattern?: string
+  hashed?: string
+  colors?: ITartanPatternColors
+  svgSrc?: string
+  pngSrc?: string
 }

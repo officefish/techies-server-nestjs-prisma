@@ -15,6 +15,29 @@ export class UploadService {
     return Buffer.from(arrayBuffer)
   }
 
+  async convertToPng(buffer: Buffer) {
+    let fullName = null
+    const promise = this.imageProcessing
+      .edit(buffer)
+      .png()
+      .toBuffer()
+      .then((buf: Buffer) => {
+        const dist = 'public/media'
+        const uuid = randomUUID()
+        const uuidTail = uuid.slice(-6)
+        const fileName = `techies_${Date.now()}_${uuidTail}.png`
+        fullName = `/${dist}/${fileName}`
+        const path = `.${fullName}`
+        const stream = fs.createWriteStream(path)
+        stream.once('open', function () {
+          stream.write(buf)
+          stream.end()
+        })
+      })
+    await promise
+    return fullName
+  }
+
   async convertToWebp(buffer: Buffer) {
     let fullName = null
     const promise = this.imageProcessing

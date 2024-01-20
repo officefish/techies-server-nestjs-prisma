@@ -8,6 +8,7 @@ import {
   Domain,
   Avatar,
   Cover,
+  Tartan,
 } from '@prisma/client'
 
 interface FullNameInput {
@@ -53,6 +54,11 @@ interface CoverInput {
   url: string
 }
 
+interface TartanInput {
+  pattern: string
+  hashed: string
+  pngUrl: string
+}
 @Injectable()
 export class UserService {
   constructor(private prisma: PrismaService) {}
@@ -421,6 +427,43 @@ export class UserService {
   }
 
   async cover(input: Prisma.CoverWhereUniqueInput): Promise<Cover | null> {
+    return this.prisma.cover.findUnique({
+      where: input,
+    })
+  }
+
+  async upsetTartan(params: {
+    user: Prisma.UserWhereUniqueInput
+    data: TartanInput
+  }): Promise<Tartan> {
+    const { user, data } = params
+
+    const pattern = data.pattern
+    const hashed = data.hashed
+    const pngUrl = data.pngUrl
+
+    const createInput: Prisma.TartanCreateInput = {
+      user: { connect: { id: user.id } },
+      pattern,
+      hashed,
+      pngUrl,
+    }
+
+    const updateInput: Prisma.TartanUpdateInput = {
+      user: { connect: { id: user.id } },
+      pattern,
+      hashed,
+      pngUrl,
+    }
+
+    return this.prisma.tartan.upsert({
+      where: { userId: user.id },
+      create: createInput,
+      update: updateInput,
+    })
+  }
+
+  async tartan(input: Prisma.CoverWhereUniqueInput): Promise<Cover | null> {
     return this.prisma.cover.findUnique({
       where: input,
     })
