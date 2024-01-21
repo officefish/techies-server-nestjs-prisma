@@ -63,6 +63,6 @@ export interface ITartan {
   pattern?: string
   hashed?: string
   colors?: ITartanPatternColors
-  svgSrc?: string
-  pngSrc?: string
+  uri?: string
+  url?: string
 }

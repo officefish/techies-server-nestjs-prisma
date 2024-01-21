@@ -151,6 +151,5 @@ model Tartan {
   userId     String    @db.ObjectId @unique
   pattern    String?
   hashed     String? 
-  pngUrl     String?
-  svgUrl     String? 
+  url        String? 
 }

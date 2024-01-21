@@ -1,4 +1,11 @@
-import { IBasicInfo, IQuote, IDomain, IAvatar, ICover } from './profile.types'
+import {
+  IBasicInfo,
+  IQuote,
+  IDomain,
+  IAvatar,
+  ICover,
+  ITartan,
+} from './profile.types'
 /**
  * Model User
  *
@@ -32,4 +39,5 @@ export interface IUserProfile {
   domain?: IDomain
   avatar?: IAvatar
   cover?: ICover
+  tartan?: ITartan
 }

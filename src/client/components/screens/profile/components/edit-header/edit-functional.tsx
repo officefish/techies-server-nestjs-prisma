@@ -115,13 +115,9 @@ const prepareUserProfileData = async (
     //const hashed = await bcrypt.hash(pattern, await bcrypt.genSalt(6))
     response['tartan'] = {
       pattern,
-      //hashed,
-      //pngSrc: tartan.pngSrc,
-      //svgSrc: tartan.svgSrc,
     }
     /* save pattern to pattern context */
   }
-  console.log(response['tartan'])
   return response
 }
 
@@ -196,7 +192,6 @@ const EditHeaderFunctional: FC = () => {
       !isValidTartan
     )
       setInvalidData(true)
-    console.log(isValidTartan)
   }, [
     isValidFullName,
     isValidCareer,

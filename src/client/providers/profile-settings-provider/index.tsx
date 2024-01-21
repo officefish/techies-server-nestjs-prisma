@@ -73,8 +73,9 @@ const pattern = [
 
 const NullTartan: ITartan = {
   id: '',
-  pngSrc: null,
-  svgSrc: null,
+  hashed: null,
+  uri: null,
+  url: null,
   colors: [...pattern],
 }
 

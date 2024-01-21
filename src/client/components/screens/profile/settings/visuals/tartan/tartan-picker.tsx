@@ -29,23 +29,25 @@ export const CoverImage = styled.div<WithBackground>`
 
 interface ITartanPicker extends ITartan {
   setColors: (value: ITartanPatternColors) => void
-  setSvgSrc: (value: string | null) => void
-  setPngSrc: (value: string | null) => void
   blockRender: boolean
 }
 
 const TartanPicker: FC<ITartanPicker> = (props) => {
-  const { pngSrc, setPngSrc, colors, setColors, setSvgSrc, blockRender } = props
+  const { colors, setColors, url, blockRender } = props
+
+  const [uri, setURI] = useState<string | null>(null)
+
   const [isLoading, setIsLoading] = useState(false)
   const canvasRef = useRef(null)
 
   useEffect(() => {
     const fetchData = async () => {
+      if (!colors) return
       // get svg builder render (valid <svg> html Tag )
-      const newSvgData = await getTartanAsRender(colors)
+      const newSvgData = (await getTartanAsRender(colors)) as string
       // conver <svg> tag to data
       const newBuf = `data:image/svg+xml;base64,${btoa(newSvgData)}`
-      setSvgSrc(newBuf)
+      setURI(newBuf)
 
       const image = new Image()
       image.src = newBuf
@@ -58,17 +60,18 @@ const TartanPicker: FC<ITartanPicker> = (props) => {
           if (context) {
             context.drawImage(image, 0, 0)
             const canvasdata = canvas.toDataURL('image/png')
-            setPngSrc(canvasdata)
+            //setURI(canvasdata)
+            setURI(canvasdata)
             setIsLoading(false)
           }
         }
       }
     }
 
-    if (pngSrc !== null) return
     if (blockRender) return
 
     fetchData()
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [colors, blockRender])
 
   const handleRandom = (e: MouseEvent<HTMLButtonElement>) => {
@@ -89,13 +92,13 @@ const TartanPicker: FC<ITartanPicker> = (props) => {
   return (
     <div className="w-full grid grid-rows-1 grid-cols-6 gap-4">
       <div className="col-span-4">
-        {isLoading || pngSrc === null ? (
+        {isLoading || (url === null && uri === null) ? (
           <div className="w-full h-40 outline-none border-2 rounded flex items-center justify-center border-accent dark:border-accent-dark">
             <span className="loading loading-ring text-accent dark:text-accent-dark loading-lg"></span>
           </div>
         ) : (
           <CoverImage
-            $background={pngSrc ? pngSrc : undefined}
+            $background={url ? url : uri}
             className="w-full h-40 rounded"
           />
         )}

@@ -57,7 +57,7 @@ interface CoverInput {
 interface TartanInput {
   pattern: string
   hashed: string
-  pngUrl: string
+  url: string
 }
 @Injectable()
 export class UserService {
@@ -440,20 +440,20 @@ export class UserService {
 
     const pattern = data.pattern
     const hashed = data.hashed
-    const pngUrl = data.pngUrl
+    const url = data.url
 
     const createInput: Prisma.TartanCreateInput = {
       user: { connect: { id: user.id } },
       pattern,
       hashed,
-      pngUrl,
+      url,
     }
 
     const updateInput: Prisma.TartanUpdateInput = {
       user: { connect: { id: user.id } },
       pattern,
       hashed,
-      pngUrl,
+      url,
     }
 
     return this.prisma.tartan.upsert({
@@ -463,8 +463,8 @@ export class UserService {
     })
   }
 
-  async tartan(input: Prisma.CoverWhereUniqueInput): Promise<Cover | null> {
-    return this.prisma.cover.findUnique({
+  async tartan(input: Prisma.TartanWhereUniqueInput): Promise<Tartan | null> {
+    return this.prisma.tartan.findUnique({
       where: input,
     })
   }

@@ -102,10 +102,10 @@ export class UserController {
       //const uri = `data:image/svg+xml;base64,${btoa(newSvgData)}`
       //console.log(uri)
       // const buffer = await this.imageProccesing.bufferFromURI(uri)
-      const pngUrl = await this.imageProccesing.convertToPng(buffer)
+      const url = await this.imageProccesing.convertToPng(buffer)
       await this.service.upsetTartan({
         user: { id: user.id },
-        data: { pattern: tartan.pattern, hashed, pngUrl },
+        data: { pattern: tartan.pattern, hashed, url },
       })
     }
 
@@ -244,12 +244,21 @@ export class UserController {
       coverData = { imageUrl: cover.url, id: cover.id }
     }
 
+    const tartanData = { url: null, id: null, pattern: null }
+    const tartan = await this.service.tartan({ userId: id })
+    if (tartan) {
+      tartanData.id = tartan.id
+      tartanData.url = tartan.url
+      tartanData.pattern = tartan.pattern
+    }
+
     const payload = {
       basicInfo: basicInfoJson,
       quote: { content: quote.content },
       domain: { value: domain.value },
       avatar: avatarData,
       cover: coverData,
+      tartan: tartanData,
     }
     reply.code(201).send(payload)
   }

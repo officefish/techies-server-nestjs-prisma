@@ -38,7 +38,7 @@ const ProfileSettings: FC = () => {
     setDomain,
     setCover,
     setAvatar,
-    //setTartan,
+    setTartan,
   } = useUserProfileStore()
 
   useEffect(() => {
@@ -51,6 +51,12 @@ const ProfileSettings: FC = () => {
     setDomain(userProfile?.domain)
     setAvatar(userProfile?.avatar)
     setCover(userProfile?.cover)
+    setTartan({
+      ...userProfile?.tartan,
+      colors: userProfile?.tartan?.pattern
+        ? JSON.parse(userProfile.tartan.pattern)
+        : null,
+    })
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [userProfile])
 

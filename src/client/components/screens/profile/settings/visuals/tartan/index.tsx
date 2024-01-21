@@ -21,24 +21,11 @@ const VisualsTartan: FC = () => {
   const setColors = (newColors: ITartanPatternColors) => {
     if (tartan === undefined) return
     setTartan({
+      ...tartan,
       id: tartan.id ? tartan.id : '1',
-      svgSrc: null,
-      pngSrc: null,
       colors: [...newColors],
     })
     invalidTartan()
-  }
-
-  const setSvgSrc = (svgSrc: string | null) => {
-    if (tartan === undefined) return
-    setTartan({ ...tartan, svgSrc })
-    //invalidTartan()
-  }
-
-  const setPngSrc = (pngSrc: string | null) => {
-    if (tartan === undefined) return
-    setTartan({ ...tartan, pngSrc })
-    //invalidTartan()
   }
 
   const handleCollabse = (newIsCollapsed: boolean) => {
@@ -54,10 +41,7 @@ const VisualsTartan: FC = () => {
             <TartanPicker
               colors={tartan?.colors}
               setColors={setColors}
-              pngSrc={tartan?.pngSrc ? tartan.pngSrc : null}
-              setPngSrc={setPngSrc}
-              svgSrc={tartan?.svgSrc ? tartan.svgSrc : null}
-              setSvgSrc={setSvgSrc}
+              url={tartan.url ?? null}
               blockRender={!isCollapsed}
             />
           </div>
