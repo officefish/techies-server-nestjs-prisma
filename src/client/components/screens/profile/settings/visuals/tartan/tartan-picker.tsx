@@ -98,7 +98,7 @@ const TartanPicker: FC<ITartanPicker> = (props) => {
           </div>
         ) : (
           <CoverImage
-            $background={url ? url : uri}
+            $background={uri ? uri : url}
             className="w-full h-40 rounded"
           />
         )}
